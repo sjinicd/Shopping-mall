@@ -1,4 +1,4 @@
-# Shopping-mall
+# With My Pet Shopping-mall
 
 🛒쇼핑몰 구현🛒
 
