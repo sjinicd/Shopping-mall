@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pet.mvc.mapper.BoardMapper">
+	<select id="selectPerPage" resultType="Board" parameterType="BoardVo">
+	    <![CDATA[ 
+	     select B.* from (select rownum as rnum, A.* from (select * from board order by post_no desc, post_order asc) A
+	  where board_idx=#{board_idx} and rownum<=#{endRow}) B where B.rnum>#{startRow}]]>
+	  
+	  
+	</select>
+		
+	<select id="selectByCatgo" resultType="Board" parameterType="BoardVo" >
+	<![CDATA[ 
+	select * from (select rownum rnum, aa.* 
+	from (select * from BOARD where ${catgo} like '%'||#{keyword}||'%' order by ${catgo}) aa) 
+	  where rnum>#{startRow} and rnum<=#{endRow}
+	]]>
+	</select>
+	
+	<select id="selectBySeq" parameterType="long" resultType="Board">
+	    select * from board where post_idx=#{post_idx}
+	</select>   
+	
+	
+	<select id="selectPostTime" parameterType="long" resultType="String">
+		select round((#{post_date}-sysdate)*24*60) FROM board where post_idx=#{post_idx}
+	</select>	
+		
+	<select id="selectCmtBySeq" parameterType="long" resultType="BoardCmt">
+		select * from board_cmt where post_idx=#{post_idx} order by cmt_date asc, cmt_order asc
+	</select>
+		
+
+		
+		
+	<select id="selectCount" resultType="long" parameterType="long">
+		select count(POST_IDX) from BOARD where board_idx=#{board_idx}
+	</select>
+	
+	<select id="selectCountByCatgo" resultType="int" parameterType="BoardVo">
+		select count(POST_IDX) from BOARD where ${catgo} like '%'||#{keyword}||'%'
+	</select>	
+		
+		
+		
+	<insert id="insert" parameterType="Board">
+	
+		insert into BOARD(post_idx, board_idx, member_number, post_writer, post_subject, content, post_date, post_count, post_like, post_no, post_order, post_depth)
+		 values(board_seq.nextval, #{board_idx}, #{member_number}, 
+		 #{post_writer, jdbcType=VARCHAR}, #{post_subject, jdbcType=VARCHAR}, #{content, jdbcType=VARCHAR}, sysdate, 0, 0,
+		 board_seq.nextval, 0, 1)
+		
+	</insert>
+	
+
+	
+	<delete id="delete" parameterType="long">
+		
+	    delete from BOARD where POST_IDX=#{post_idx}
+    </delete>
+       
+    <update id="update" parameterType="Board">
+    	update board set post_subject=#{post_subject}, content=#{content}
+    	where post_idx=#{post_idx}
+    </update>
+   
+   
+    
+    <select id = "getBoardReplyInfo" parameterType="long">
+    	select post_idx, post_order, post_depth, post_no FROM board where post_idx=#{post_idx};
+    </select>
+  
+   
+   <select id ="selectReplyElement" parameterType="long" resultType="Board">
+   		select post_order, post_no, post_depth from board where post_idx=#{post_idx}
+   </select>
+   
+    <update id="updateOrder" parameterType="long">	
+    	<![CDATA[update board set post_order=post_order+1 where post_idx>#{post_no} and post_no=#{post_no}]]>
+    </update>
+    
+    <insert id="rewriteBoard" parameterType="Board">
+    	<selectKey keyProperty="post_idx" keyColumn="post_idx" order="BEFORE" resultType="long">
+    		select board_seq.nextval from dual
+    	</selectKey>
+    	
+    	insert into BOARD(post_idx, board_idx, member_number, post_writer, post_subject, content, post_date, post_no, post_order, post_depth)
+		 values(#{post_idx}, #{board_idx}, #{member_number},
+		 #{post_writer, jdbcType=VARCHAR}, #{post_subject, jdbcType=VARCHAR}, #{content, jdbcType=VARCHAR}, sysdate,
+		 #{post_no},#{post_order},#{post_depth})
+		
+    </insert>
+
+
+
+    
+    
+    <update id="updateHitCount" parameterType="long">
+    	UPDATE BOARD SET post_count=post_count+1 WHERE post_idx=#{post_idx}
+    </update>
+    
+     
+    <insert id="insertCmt" parameterType="BoardCmt">
+    INSERT INTO board_cmt(comment_idx, member_number, cmt_writer, post_idx, board_idx, cmt_content, cmt_date, cmt_no, cmt_order) 
+    VALUES(BOARD_CMT_SEQ.NEXTVAL, #{member_number}, #{cmt_writer}, #{post_idx, jdbcType=INTEGER}, #{board_idx}, #{cmt_content}, sysdate, BOARD_CMT_SEQ.NEXTVAL, 0)
+
+	</insert>
+	
+	
+	<delete id="deleteCmt" parameterType="long">
+		delete from board_cmt where comment_idx=#{comment_idx}
+	</delete>
+	
+	<update id="updateCmt" parameterType="BoardCmt">
+		update board_cmt set cmt_content=#{cmt_content} where comment_idx=#{comment_idx}
+	</update>
+	
+	<insert id="insertLike" parameterType="BoardLike">
+		insert into board_like values(#{post_idx}, #{member_number})
+	</insert>
+	
+	<select id="getLikeCount" resultType="int" parameterType="long">
+		select count(*) from board_like where post_idx=#{post_idx}
+	</select>
+	
+	<delete id="deleteLike" parameterType="BoardLike">
+		delete from board_like where post_idx=#{post_idx} and member_number=#{member_number}
+	</delete>
+	
+	<select id ="divideLike" parameterType="BoardLike" resultType="int">
+		select count(*) from board_like where post_idx=#{post_idx} and member_number=#{member_number}
+	</select>
+	
+	
+	
+	<insert id="rewriteCmt" parameterType="BoardCmt">
+		<selectKey keyProperty="comment_idx" keyColumn="comment_idx" order="BEFORE" resultType="long">
+			select board_cmt_seq.nextval from dual
+		</selectKey>
+	
+		insert into board_cmt values(#{comment_idx}, #{post_idx}, #{board_idx},#{member_number}, #{cmt_content}
+		, #{cmt_writer}, sysdate, #{comment_idx}, 1)
+	
+	</insert>
+	
+		<select id ="getRecent" resultType="Board">
+	<![CDATA[select post_subject, post_idx, content, post_writer from ( select * from board order by post_date desc) where board_idx=3 and rownum<5]]>
+	</select>
+	
+	
+	
+	
+	
+
+	</mapper>
