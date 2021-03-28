@@ -127,6 +127,8 @@
       <section>
      
          <form name="order" id="order" method="post" action="order?member_number=4">
+         <input name="buyer_code" type="hidden" value="${productDes.product_code}">
+         <input name="amout" type="hidden" value="22">
             <div class="container py-lg-5" >
             <div class="content-info-in row">
             <div class="content-gd col-lg-5 pl-lg-4">
@@ -145,6 +147,8 @@
                </br>
                
                <table class="table--1aTBT9emfH" >
+               
+               </div>
                   <colgroup>
                      <col class="col_1--5TSKjnuT7E">
                      <col class="col_2--YKLfiddUoQ">
@@ -165,12 +169,17 @@
                   </thead>
                   <tbody>
                      <c:set var="sum" value="0" />
+                     <tr><c:if test="${empty cartLists}">
+                  	<td colspan="6" align="center">장바구니에 상품이 없습니다.<td>
+               </c:if></tr>
                      <c:forEach items="${cartLists}" var="cartList" varStatus="status">
                     <tr class="table_row--2U-tpJvyb0">
+                    
                        <td name="product_code" id="product_code" type="hidden" value="${cartList.product_code}" class="table_cell--275JhdiLLN" >${status.index}</td>
                        <td name="product_content" id="product_content" type="text" value="${cartList.product_content}" class="table_cell--275JhdiLLN" >${cartList.product_content}</td>
                        <td class="table_cell--275JhdiLLN" ><img src="${cartList.product_image}" width=70 height=70 align="center"/></td>
-                       <td name="product_amount" id="product_amount" type="text" value="${cartList.product_amount}" class="table_cell--275JhdiLLN" >${cartList.product_amount}</td>
+                       <td><input name="product_amount" id="product_amount" type="number" value="${cartList.product_amount}" class="table_cell--275JhdiLLN" ></td>
+                       <%-- <td><input name="product_amount" id="product_amount" type="number" value="${cartList.product_amount}" class="table_cell--275JhdiLLN" ></td> --%>
                        <td name="product_size" id="product_size" type="text" value="${cartList.product_size}" class="table_cell--275JhdiLLN" >${cartList.product_size}</td>
                        <td name="product_price" id="product_price" type="text" value="${cartList.product_price}" class="table_cell--275JhdiLLN" >${cartList.product_price}</td>
                        <td class="table_cell--275JhdiLLN" type="text" align='center' value="${status.index}"><a href="del?idx=${status.index}"><b>X</b></a></td>
@@ -218,18 +227,16 @@
            </br>
             <button type="reset" class="popup btn btn-style btn-primary"  style="float: center;" >
             리스트비우기&nbsp;</button>&nbsp;&nbsp;&nbsp;
-            &nbsp;<a href="order?member_number=4"><button type="button" class="popup btn btn-style btn-primary"  style="float: right;" >
+            &nbsp;<a href="order?member_number=4"><button type="submit" class="popup btn btn-style btn-primary"  style="float: right;" >
             결제하기&nbsp;</button>&nbsp;</a>
-            &nbsp;<button type="button" class="popup btn btn-style btn-primary" style="float: left;" onClick="location.href='product?catgo_code=9'">
+            &nbsp;<button id="check_module2" type="button" class="popup btn btn-style btn-primary" style="float: left;">
             쇼핑계속하기</button>&nbsp;
-            <script src="assets/js/bootstrap.min.js"></script>
             
+            <script src="assets/js/bootstrap.min.js"></script>
          </form>
       </section>
       <!--//MENU-JS-->
 <script src="../assets/js/bootstrap.min.js"></script>
- 
-
   <!-- move top -->
   <button onclick="topFunction()" id="movetop" title="Go to top">
     &#10548;
