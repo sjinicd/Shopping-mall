@@ -1,6 +1,6 @@
 #  Shopping-mall (With My Pet)
 ![위마펫 메인페이지](https://user-images.githubusercontent.com/75344406/112977326-e0eeda00-9190-11eb-934d-fce64a6352aa.jpg)
-🛒With My Pet 쇼핑몰 구현🛒
+🛒With My Pet 쇼핑몰 구현 part🛒
 
 
 ## 업무 분석
