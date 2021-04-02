@@ -1,6 +1,6 @@
 #  Shopping-mall (With My Pet)
-
-🛒쇼핑몰 구현🛒
+![위마펫 메인페이지](https://user-images.githubusercontent.com/75344406/112977326-e0eeda00-9190-11eb-934d-fce64a6352aa.jpg)
+🛒With My Pet 쇼핑몰 구현 part🛒
 
 
 ## 업무 분석
@@ -32,3 +32,11 @@ With My Pet 이라는 애완동물 커뮤니티 사이트가 있다.
 <b>7.</b> 상품 등록</br>
 7-1) 상품 등록과 더불어 리스팅이 가능하도록 한다.</br></br>
  
+### 시연부분
+<br>상품등록부분</br>
+![상품등록](https://user-images.githubusercontent.com/75344406/113244728-908e8e00-92f0-11eb-8559-e018f3a5009e.gif)
+<br>리뷰등록부분</br>
+![리뷰등록](https://user-images.githubusercontent.com/75344406/113244723-8f5d6100-92f0-11eb-996d-10a1a750c323.gif)
+<br>장바구니부분</br>
+![장바구니](https://user-images.githubusercontent.com/75344406/113244727-8ff5f780-92f0-11eb-98b6-3a4d93f965bf.gif)
+
