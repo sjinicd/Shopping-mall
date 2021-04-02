@@ -16,5 +16,5 @@ public class OrderSu {
 	private String ordersu_email;
 	private String product_name;
 	private long product_price;
-	
+	private long order_code;
 }

@@ -1,10 +1,9 @@
 package pet.shop.controller;
 
-
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.UUID;
 
@@ -12,12 +11,13 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import org.springframework.web.servlet.ModelAndView;
@@ -31,6 +31,7 @@ import pet.shop.domain.Product;
 import pet.shop.domain.ProductListResult;
 import pet.shop.domain.Review;
 import pet.shop.service.FileUploadService;
+import pet.shop.service.LikeListService;
 import pet.shop.service.ProductService;
 
 @Log4j
@@ -41,6 +42,9 @@ public class ShopController {
 	private ProductService service;
 	@Resource(name="FileUploadServiceImpl")
 	private FileUploadService fileService;
+	
+	@Autowired
+	private LikeListService likeListService;
 	
 	//상품 소분류 카테고리
 	@GetMapping("/category")
@@ -142,9 +146,9 @@ public class ShopController {
 	//상품 상세페이지1
  	@GetMapping("/productDes")
 	public ModelAndView productDes(HttpSession session, @RequestParam long catgo_code,
-			@RequestParam long review_number, Option option, long product_code) {
+			@RequestParam long review_number, Option option, long product_code, Product product) {
 		log.info("##"+review_number+catgo_code+product_code);
-		Product list = service.listS(catgo_code);
+		Product list = service.listS(product);
 		MypagePetVO mpvo = (MypagePetVO) session.getAttribute("petMypage");
 		log.info("mpvo 들어옴: "+mpvo);
 		ArrayList<Review> reviewCon = service.listReviewS(review_number);
@@ -165,15 +169,15 @@ public class ShopController {
  		log.info("#왔니? review: "+ review);
  		service.insertReview(review);
  		log.info("###productDes"+review);
-		return "redirect:productDes";
+		return "redirect:productDes?catgo_code=9&review_number=1&product_code=9";
  	}
  	
  	//상품 상세페이지2
 	@RequestMapping("/productDes21")
-	public ModelAndView productDes21(HttpSession session, @RequestParam long catgo_code,@RequestParam long review_number
+	public ModelAndView productDes21(HttpSession session, Product product, @RequestParam long catgo_code,@RequestParam long review_number
 			, Option option, long product_code) {
 		log.info("@@"+review_number+catgo_code+product_code);
-		Product list = service.listS(catgo_code);
+		Product list = service.listS(product);
 		List<Review> reviewCon = service.listReviewS(review_number);
 		ArrayList<Option> optionlist= service.listOption(product_code);
 		session.setAttribute("list", list);
@@ -216,10 +220,27 @@ public class ShopController {
 	    if(saveFile.length() !=0) {
 	    	String url = fileService.saveStore(file, product);//service로 이동..파일 저장함
 	    }
-	    return "redirect:shop/category?catgo_code=8";
+	    return "redirect:category?catgo_code=8";
 		}
-	
-	
-	
-	}
 
+	@ResponseBody
+	@RequestMapping(value="/insertLikeList.do")
+	public Long insertLikeList(HttpSession session, long product_code){
+		MemberVO vo = (MemberVO) session.getAttribute("login");
+		likeListService.insertLikeList(vo.getMember_number(), product_code);
+		return product_code;
+	}
+	
+	//찜한 목록 리스트
+	@RequestMapping(value="/likeList.do")
+	public ModelAndView likeList(HttpSession session){
+		Hashtable<String, Object> map = new Hashtable<String, Object>();
+		MemberVO vo = (MemberVO) session.getAttribute("login");
+		ArrayList<Product> LikeList = likeListService.getLikeList(vo.getMember_number());
+		ArrayList<Product> CommendList = likeListService.getCommendList();
+		map.put("LikeList",LikeList);
+		map.put("CommendList",CommendList);
+		ModelAndView mv = new ModelAndView("shop/likelist","map",map);
+		return mv;
+	}
+}

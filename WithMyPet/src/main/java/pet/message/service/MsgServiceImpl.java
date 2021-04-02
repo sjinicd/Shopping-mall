@@ -5,47 +5,67 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Hashtable;
 import java.util.concurrent.TimeUnit;
 import org.springframework.stereotype.Service;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
+import pet.member.vo.MemberVO;
 import pet.message.vo.MemberReview;
 import pet.message.vo.Msg;
 import pet.message.vo.MsgListResult;
 import pet.mvc.mapper.MessageMapper;
+import pet.mvc.mapper.WalkMapper;
 
 @AllArgsConstructor
 @Service
 @Log4j
 public class MsgServiceImpl implements MsgService {
 	MessageMapper msgMapper;
+	WalkMapper walkMapper;
 	
 	// 최근 대화목록 리스트
 	@Override
 	public MsgListResult getAllMsgList(long member_number) {
 		MsgListResult msgLists = new MsgListResult();
+		// 대화상대 목록 가져오기
 		ArrayList<Msg> lists = msgMapper.getAllMsgList(member_number);
-		
-		getTimes(lists); // 지난 시간 구하기
+		// 대화상대 프로필 사진 가져오기
+		ArrayList<String> urls = new ArrayList<String>();
+		for(Msg list : lists) {
+			String url = "";
+			if(list.getMember_number() == member_number) url = walkMapper.getWalkPic(list.getSender_number());
+			else url = walkMapper.getWalkPic(list.getMember_number());
+			urls.add(url);
+		}
+		// 지난 시간 구하기
+		getTimes(lists);
 		msgLists.setChatList(lists);
+		msgLists.setChatPics(urls);
 		return msgLists;
-		
 	}
 
 	// 1:1 주고받은 메시지 
 	@Override
 	public MsgListResult getMsgList(long member_number, long sender_number) {
-		MsgListResult msgList = new MsgListResult();
+		MsgListResult msgLists = new MsgListResult();
 		ArrayList<Msg> lists = msgMapper.getMsgList(member_number, sender_number);
-		getTimes(lists); // 경과 시간 구한 후, msg_time 셋팅
-		msgList.setChatList(lists);
-		return msgList;
+		// 대화상대 프로필 사진 가져오기
+		ArrayList<String> urls = new ArrayList<String>();
+		for(Msg list : lists) {
+			String url = walkMapper.getWalkPic(list.getMember_number());
+			urls.add(url);
+		}
+		// 지난 시간 구하기
+		getTimes(lists); 
+		msgLists.setChatList(lists);
+		msgLists.setChatPics(urls);
+		return msgLists;
 	}
 	
 	// 메시지 insert (= 보내기)
 	@Override
 	public void insertMsg(Msg msg) {
-		log.info("## msg insert"+msg);
 		msgMapper.insertMsg(msg);
 	}
 	
@@ -99,7 +119,6 @@ public class MsgServiceImpl implements MsgService {
 	// 읽음 처리 후, 읽지 않은 메시지 카운트
 	@Override
 	public long msgRead(long member_number, long sender_number) {
-		log.info("###읽었어!"+member_number+", "+sender_number);
 		msgMapper.msgRead(member_number, sender_number);
 		long unread = getUnreadMsg(member_number);
 		return unread;
@@ -126,7 +145,6 @@ public class MsgServiceImpl implements MsgService {
 			}
 			long seconds = (curDate.getTime() - walkDate.getTime());
 			long days = TimeUnit.MILLISECONDS.toDays(seconds);
-			
 			if(days > 7) return null;
 			else {
 				DateFormat dayForm = new SimpleDateFormat("yyyy년 MM월 dd일");
@@ -137,17 +155,14 @@ public class MsgServiceImpl implements MsgService {
 		}else return null;
 	}
 	
-	// 산책 한줄평 작성, 트랜잭션
+	// 산책 한줄평 작성
 	@Override
 	public void writeReview(MemberReview memberReview, long member_number) {
 		// 주최/참가에 따라서, insert시 member_number를 변경해줌 (myBatis에서 분기하지 않으려고)
-		log.info("####이거가 memberReview"+memberReview);
 		if(memberReview.getWalk_number() == member_number) {// 내가 참가자일때
 			long origin = memberReview.getMember_number();
 			memberReview.setMember_number(member_number);
-			log.info("####바꿔줌"+origin+"을 "+memberReview.getMember_number());
 		}
-		log.info("####Here"+memberReview.getWalk_idx()+"번 글,"+member_number);
 		msgMapper.updateJoin(memberReview.getWalk_idx(),member_number);
 		msgMapper.writeReview(memberReview);
 	}
@@ -157,6 +172,33 @@ public class MsgServiceImpl implements MsgService {
 	public String getSenderName(long member_number) {
 		String name = msgMapper.getSenderName(member_number);
 		return name;
+	}
+
+	// 회원 검색 시, 해당 회원과의 최근 대화 뽑기
+	@Override
+	public Hashtable<String, Object> getMemberByName(long member_number, String member_name) {
+		Hashtable<String, Object> map = new Hashtable<String, Object>();
+		ArrayList<MemberVO> memberList = msgMapper.getMemberByName(member_name);
+		ArrayList<Msg> msgList = new ArrayList<Msg>();
+		ArrayList<String> memberUrls = new ArrayList<String>();
+		// 검색된 이름을 가진 회원과의 최근대화+프로필사진 셋팅  
+		for(MemberVO member : memberList) {
+			String url = walkMapper.getWalkPic(member.getMember_number());
+			memberUrls.add(url);
+			Msg list = msgMapper.getRecentMsgByNumber(member_number, member.getMember_number());
+			msgList.add(list);
+		}
+		map.put("memberList",memberList);
+		map.put("msgList",msgList);
+		map.put("memberUrls",memberUrls);
+		map.put("memberName",member_name);
+		return map;
+	}
+
+	@Override
+	public String getSenderPic(long member_number) {
+		String senderPic = walkMapper.getWalkPic(member_number);
+		return senderPic;
 	}
 
 }

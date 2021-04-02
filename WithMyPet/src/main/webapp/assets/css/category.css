@@ -8597,7 +8597,7 @@ button.bg-dark:focus {
 
 .mt-5,
 .my-5 {
-  margin-top: 3rem !important;
+  margin-top: margin-top: 50%;
 }
 
 .mr-5,
@@ -14078,7 +14078,7 @@ button,
 .btn {
   cursor: pointer !important;
   font-family: 'Spoqa Han Sans Neo';
-  font-size: x-large;
+  font-size: 17px;
 }
 
 .clear {
@@ -14321,12 +14321,11 @@ a.link-style:hover:before {
 }
 
 .sub-title {
-  font-size: 18px;
-  font-weight: 400;
-  text-transform: uppercase;
-  line-height: 2em;
-  letter-spacing: 1px;
-  color: var(--secondary);
+  font-size: 40px;
+    font-weight: 600;
+    line-height: 48px;
+    text-transform: capitalize;
+    font-family: initial;
 }
 
 .sub-title span {

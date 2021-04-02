@@ -12,12 +12,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>:: With My Pet :: 게시판 </title>
    <!-- google fonts -->  
-   <link href="//fonts.googleapis.com/css2?family=Jost:wght@300;400;600&display=swap" rel="stylesheet">
+   
    <!-- google fonts --> 
   <!-- Template CSS -->
-  <link rel="stylesheet" href="../assets/css/style-liberty.css">
-  <link rel="stylesheet" href="../assets/css/board.css">
+   <link href="//fonts.googleapis.com/css2?family=Jost:wght@300;400;600&display=swap" rel="stylesheet">
+   <link href='//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css' rel='stylesheet' type='text/css'>
+   <link rel="stylesheet" href="../assets/css/style-liberty.css">
+   <link rel="stylesheet" href="../assets/css/board.css">
+  
   <!-- 제이쿼리 -->
+  <script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.js"></script> 
   <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script> 
   <script src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
   
@@ -26,34 +30,34 @@
 </head>
 
 <body>
+<!--header-->
 <header id="site-header" class="fixed-top">
   <div class="container">
       <nav class="navbar navbar-expand-lg stroke">
-          <a href="#"><img src="../assets/images/logos/logo-yellow.png" class="img-curve img-fluid" alt=""></a>
+          <a href="../../"><img src="../assets/images/logos/logo-yellow.png" class="img-curve img-fluid" alt="" /></a>
          
-          <!-- if logo is image enable this   
-      <a class="navbar-brand" href="#index.html">
-          <img src="image-path" alt="Your logo" title="Your logo" style="height:35px;" />
-      </a> -->
-          <button class="navbar-toggler  collapsed bg-gradient" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+      
+      
+          <button class="navbar-toggler  collapsed bg-gradient" type="button" data-toggle="collapse"
+              data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false"
+              aria-label="Toggle navigation">
               <span class="navbar-toggler-icon fa icon-expand fa-bars"></span>
               <span class="navbar-toggler-icon fa icon-close fa-times"></span>
-              
+              </span>
           </button>
 
           <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
-              <ul class="navbar-nav ml-auto">
+             <ul class="navbar-nav ml-auto">
                   <li class="nav-item active">
-                      <a class="nav-link" href="index.html">Home <span class="sr-only">(current)</span></a>
+                      <a class="nav-link" href="index.html" style="font-family: 'Spoqa Han Sans Neo';">Home <span class="sr-only">(current)</span></a>
                   </li>
-                  
                   <li class="nav-item dropdown">
                       <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown1" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="font-family: 'Spoqa Han Sans Neo';">
                          	산 책 <span class="fa fa-angle-down"></span>
                       </a>
                       <div class="dropdown-menu" aria-labelledby="navbarDropdown1" style="font-family: 'Spoqa Han Sans Neo';">
-                      	<a class="dropdown-item" href="walk/list.do?cp=1">산책모집 </a>
-                          <a class="dropdown-item" href="walk/board.do">산책후기 </a>
+                      	<a class="dropdown-item" href="../../walk/list.do?cp=1" style="font-family: 'Spoqa Han Sans Neo';">산책모집 </a>
+                          <a class="dropdown-item" href="../../walk/board.do" style="font-family: 'Spoqa Han Sans Neo';">산책후기 </a>
                       </div>
                   </li>
                   <li class="nav-item dropdown">
@@ -61,9 +65,9 @@
                          	쇼 핑 <span class="fa fa-angle-down"></span>
                       </a>
                       <div class="dropdown-menu" aria-labelledby="navbarDropdown1" style="font-family: 'Spoqa Han Sans Neo';">
-                      	<a class="dropdown-item" href="product?catgo_code=9">쇼핑하기</a>
-                          <a class="dropdown-item" href="cart">장바구니</a>
-                          <a class="dropdown-item" href="order">결제</a>
+                      	<a class="dropdown-item" href="../../product?catgo_code=9" style="font-family: 'Spoqa Han Sans Neo';">쇼핑하기</a>
+                          <a class="dropdown-item" href="../../cart" style="font-family: 'Spoqa Han Sans Neo';">장바구니</a>
+                          <a class="dropdown-item" href="../../shop/order" style="font-family: 'Spoqa Han Sans Neo';">결제</a>
                       </div>
                   </li>
                   <li class="nav-item dropdown">
@@ -71,19 +75,34 @@
                          	 커뮤니티 <span class="fa fa-angle-down"></span>
                       </a>
                       <div class="dropdown-menu" aria-labelledby="navbarDropdown1" style="font-family: 'Spoqa Han Sans Neo';">
-                          <a class="dropdown-item" href="board/list.do?board_idx=1&amp;cp=1">공지사항</a>
-                          <a class="dropdown-item" href="board/list.do?board_idx=2&amp;cp=1">일상이야기</a>
-                          <a class="dropdown-item" href="board/list.do?board_idx=3&amp;cp=1">산책후기</a>
-                          <a class="dropdown-item" href="board/list.do?board_idx=4&amp;cp=1">쇼핑후기</a>
+                          <a class="dropdown-item" href="../../board/list.do?board_idx=1" style="font-family: 'Spoqa Han Sans Neo';">공지사항</a>
+                          <a class="dropdown-item" href="../../board/list.do?board_idx=2" style="font-family: 'Spoqa Han Sans Neo';">일상이야기</a>
+                          <a class="dropdown-item" href="../../board/list.do?board_idx=3" style="font-family: 'Spoqa Han Sans Neo';">산책후기</a>
+                          <a class="dropdown-item" href="../../board/list.do?board_idx=4" style="font-family: 'Spoqa Han Sans Neo';">쇼핑후기</a>
+                          <a class="dropdown-item" href="../../board/list.do?board_idx=5" style="font-family: 'Spoqa Han Sans Neo';">문의사항</a>
                       </div>
                   </li>
-                  <li class="nav-item">
-                      <a class="nav-link" href="../member/login.do" style="font-family: 'Spoqa Han Sans Neo';">로그인 </a>
-                  </li>
-                 
-                  <li class="nav-item">
-                      <a class="nav-link" href="sendmail.do">Contact </a>
-                  </li>
+                  <c:choose>
+                  	  <c:when test="${empty login.member_name}">
+		                  <li class="nav-item">
+		                      <a class="nav-link" href="/member/login.do" style="font-family: 'Spoqa Han Sans Neo';">로그인 </a>
+		                  </li>
+	                  </c:when>
+	                  <c:otherwise>
+	                  	  <li class="nav-item">
+		                      <a class="nav-link" href="/member/login.do" style="font-family: 'Spoqa Han Sans Neo';">로그아웃 </a>
+		                  </li>
+		                  <li class="nav-item">
+		                      <a class="nav-link" href="/member/mypage.do" style="font-family: 'Spoqa Han Sans Neo';">마이페이지 </a>
+		                  </li>
+	                  </c:otherwise>
+                  </c:choose>
+                  <!-- 일때만 페이지 입장 -->
+                  <c:if test="${login.member_name eq 'admin'}"> 
+	                  <li class="nav-item">
+	                      <a class="nav-link" href="/admin/index.do" style="font-family: 'Spoqa Han Sans Neo';">관 리 </a>
+	                  </li>
+                  </c:if>
               </ul>
           </div>
           <!-- toggle switch for light and dark theme -->
@@ -104,6 +123,7 @@
       </nav>
   </div>
 </header>
+<!-- //header -->
 	
 <div class="title">
 <h3>게시판 </h3>
@@ -127,7 +147,9 @@
 	 <a style="color:#424242;font-weight: 500;" href="list.do?board_idx=1">공지사항</a>&nbsp;&nbsp;
 	 <a style="color:#424242;font-weight: 500;" href="list.do?board_idx=2">일상이야기</a>&nbsp;&nbsp;
   	 <a style="color:#424242;fo	nt-weight: 500;" href="list.do?board_idx=3">산책후기</a>&nbsp;&nbsp;
-	 <a style="color:#424242;font-weight: 500;" href="list.do?board_idx=4">쇼핑후기</a>
+	 <a style="color:#424242;font-weight: 500;" href="list.do?board_idx=4">쇼핑후기</a>&nbsp;&nbsp;
+	 <a style="color:#424242;font-weight: 500;" href="list.do?board_idx=4">문의사항</a>
+	 
 	</div>
 	</div>
 <!-- 메뉴바 끝-->
@@ -135,13 +157,26 @@
 
 
 <!-- 컨텐츠시작 -->
-<div class="header">#${board.post_idx}<br>
+<div class="header">#${board.post_idx}&nbsp;&nbsp;<c:forEach items="${board.tag}" var="tag"><div class="tagDiv">${tag.post_tag}</div></c:forEach><br>
 <div class="sub">${board.post_subject}</div>
-<div class="user">${board.post_writer}</div> <div class="date">${board.post_date}</div> <div class="hit">조회 ${board.post_count}</div>
+<div class="user"><div class="memberDetail">${board.post_writer} <div class="dropdown-content">
+  
+
+<a href="list.do?member_number=${board.member_number}">게시글보기</a>
+<a href="../msg/chat.do?member_number=${board.member_number}">1:1 채팅</a>
+
+  </div>
+</div></div>
+
+
+ <div class="date">${board.post_date}</div> <div class="hit">조회 ${board.post_count}</div>
+ 
+
+
+
 </div>
 
-<div class="cont">${board.content}  
-
+<div class="cont">
 <div class="drop">
 	<div class="hambergurMenu">
 		<div class="hamburger"></div>
@@ -153,11 +188,14 @@
   <a href="javascript:sendLink()">공유하기  <img src="https://developers.kakao.com/assets/img/about/logos/kakaolink/kakaolink_btn_small.png" style="width: 20px;padding-bottom:5px;">
   </a>
   <c:if test="${not empty login}"><a href='rewrite.do?post_idx=${board.post_idx}&post_order=${board.post_order}' style="color: black;">답글작성</a></c:if>
-  <c:if test="${login.member_number eq board.member_number or login.member_name eq '관리자'}">
+  <c:if test="${login.member_number eq board.member_number or login.member_name eq 'admin'}">
 <a href='modify.do?post_idx=${board.post_idx}'>수정</a>
 <a href='delete.do?post_idx=${board.post_idx}'>삭제</a></c:if>
   </div>
 </div>
+<div class="content">${board.content}</div>  
+
+
     
 <script>
 function clickLike(member_name){
@@ -179,9 +217,9 @@ function clickLike(member_name){
 		success: function(result){
 			var htmls= result;
 				$('.like').html(htmls); 
-				/* $('.like-button').on('click', function() {
+				 $('.like-button').on('click', function() {
 					  $('.like-button').toggleClass('liked')
-					}) */
+					}) 
 		},
 		error: function(request, status, error){
 			  alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+ error);
@@ -245,6 +283,7 @@ confirm("삭제하시겠습니까?");
 function replyButton(comment_idx, cmt_writer, index, cmt_date){
 	var cmtIdx = comment_idx;
 	var cmtWriter = cmt_writer;
+	var cmtDate = cmt_date;
 	var htmls = "";
 	var sIndex = index;
 
@@ -253,9 +292,9 @@ function replyButton(comment_idx, cmt_writer, index, cmt_date){
 	
 	htmls += '<form id="editReply">';
  	htmls += '<div class="replyfirstsec" id="editId">';
-	htmls += '<div class="replywriter" id="writerId">'+cmtWriter+'님 댓글 수정 중</div><input type="hidden" value='+cmtIdx+' name="comment_idx"/><br></div>';
+	htmls += '<div class="replywriter" id="writerId">'+cmtWriter+'님의 답변(수정중)</div><input type="hidden" value='+cmtIdx+' name="comment_idx"/><br></div>';
 	htmls += '<div class="replysecondsec" id="editId"><div class="rereple"><textarea id="contentInput" name="cmt_content" rows="10" style="height: 70px; width:100%;"></textarea>';	
-	htmls += ' <input class="submitbtn" type="button" value="등록" onclick="replyUpdate('+cmtIdx+',\''+cmtWriter+'\','+sIndex+', '+cmt_date+')"></div></form>';
+	htmls += ' <input class="submitbtn" type="button" value="등록" onclick="replyUpdate('+cmtIdx+',\''+cmtWriter+'\','+sIndex+', '+cmtDate+')"></div></form>';
 	
 	
 	$('#replyZone'+sIndex).html(htmls);
@@ -269,8 +308,9 @@ function replyUpdate(comment_idx, cmt_writer, index, cmt_date){
 	var writer = cmt_writer;
 	var htmls = "";	
 	var sIndex = index;
+	var cmtDate = cmt_date;
 	var inputId = $('#contentInput').val();
-	alert(cmt_date);
+
 
 	
 	
@@ -284,10 +324,10 @@ function replyUpdate(comment_idx, cmt_writer, index, cmt_date){
 		success: function(result){
 			htmls += '<div class="replyfirstsec" id="comment_idx'+comment_idx+'">';
 			htmls += '<div class="replywriter" id="writerId">'+writer+' 님의 답변 </div><br>';
-			htmls += '<div style="font-size:12px;" id="dateId">'+cmt_date+'</div></div>';
+			htmls += '<div style="font-size:12px;" id="dateId">'+cmtDate+'</div></div>';
 			htmls += '<div class="replysecondsec" id="contentId">'+inputId+'</div>';
 			htmls += '<div class="contbtns"><div class="writecomment">댓글쓰기</div>';
-			htmls += '<div class="modify"><a onclick="replyButton('+comment_idx+','+writer+','+sIndex+','+cmt_date+')">수정&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></div>';
+			htmls += '<div class="modify"><a onclick="replyButton('+comment_idx+','+writer+','+sIndex+','+cmtDate+')">수정&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></div>';
 			htmls += '<div class="delete"><a onclick="replyDelete('+comment_idx+','+sIndex+')">삭제</a></div>';
 
 			 
@@ -345,7 +385,7 @@ tryReply.submit();
 	<div class="replysecondsec" id="contentId">${cmt.cmt_content}</div>
 	<c:if test="${not empty login}"><div class="writecomment" onclick="writeReplyButton(${cmt.comment_idx}, '${cmt.cmt_writer}', 
 	${status.index}, '${login.member_name}',${login.member_number},${board.post_idx}, ${board.board_idx})">댓글쓰기</div></c:if>
-	<c:if test="${login.member_number eq cmt.member_number or login.member_name eq '관리자'}">
+	<c:if test="${login.member_number eq cmt.member_number or login.member_name eq 'admin'}">
 	<div class="modify"><a onclick="replyButton(${cmt.comment_idx},'${cmt.cmt_writer}',${status.index},'${cmt.cmt_date}')">수정</a></div>
 	<div class="delete"><a onclick="replyDelete(${cmt.comment_idx}, ${status.index})">삭제</a></div>
 	</c:if>
@@ -414,7 +454,93 @@ tryReply.submit();
 
 
 
+<script>
+ function viewMember(){
+	 window.location.href = "#viewMember";
+ }
+</script>
+ 
+ 
+ <!-- footer-28 block -->
+<section class="w3l-footer">
+  <footer class="footer-28">
+    <div class="footer-bg-layer">
+      <div class="container py-lg-3">
+        <div class="row footer-top-28">
+          <div class="col-lg-6 col-md-5 footer-list-28 mt-5">
+            <h6 class="footer-title-28">Contact information</h6>
+            <ul>
+              <li>
+                <p><strong>Address</strong> : Seoul Mapo Baekbumro, South Korea</p>
+              </li>
+              <li>
+                <p><strong>Contact</strong> : <a href="tel:+(12)234-11-24">Click Here</a></p>
+              </li>
+            </ul>
 
+            <div class="main-social-footer-28 mt-3">
+              <ul class="social-icons">
+                <li class="facebook">
+                  <a href="#link" title="Facebook">
+                    <span class="fa fa-facebook" aria-hidden="true"></span>
+                  </a>
+                </li>
+                <li class="twitter">
+                  <a href="#link" title="Twitter">
+                    <span class="fa fa-twitter" aria-hidden="true"></span>
+                  </a>
+                </li>
+                <li class="dribbble">
+                  <a href="#link" title="Dribbble">
+                    <span class="fa fa-dribbble" aria-hidden="true"></span>
+                  </a>
+                </li>
+                <li class="google">
+                  <a href="#link" title="Google">
+                    <span class="fa fa-google" aria-hidden="true"></span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-lg-6 col-md-7">
+            <div class="row">
+              <div class="col-sm-4 col-6 footer-list-28 mt-5">
+                <h6 class="footer-title-28">Walk Service</h6>
+                <ul>
+                  <li><a href="about.html">Cha Ji Hyun</a></li>
+                  <li><a href="blog.html">Lim Yeon Ji</a></li>
+                </ul>
+              </div>
+              <div class="col-sm-4 col-6 footer-list-28 mt-5">
+                <h6 class="footer-title-28">Shopping Service</h6>
+                <ul>
+                  <li><a href="contact.html">Lee Ok Seok</a></li>
+                  <li><a href="#signup">Sung Jin Hee</a></li>
+                </ul>
+              </div>
+              <div class="col-sm-4 footer-list-28 mt-5">
+                <h6 class="footer-title-28">Member Service</h6>
+                <ul>
+                  <li><a href="#URL">Choi Woo Jae</a></li>
+                  <li><a href="#URL">Lee Su Jin</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="midd-footer-28 align-center py-lg-4 py-3 mt-5">
+        <div class="container">
+          <p class="copy-footer-28 text-center"> © 2021 With My Pet. All Rights Reserved.
+           </p>
+        </div>
+      </div>
+    </div>
+  </footer>
+  </section>
 </body>
 
 </html>

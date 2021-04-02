@@ -41,64 +41,86 @@ public class CartController {
 	private ProductService service2;
 
 	
-	//¸®½ºÆ® ºÒ·¯¿À±â
+	//ï¿½ï¿½ï¿½ï¿½Æ® ï¿½Ò·ï¿½ï¿½ï¿½ï¿½ï¿½
 	@GetMapping("/del")
 	public String cart(Cart cart,HttpSession session,int idx) throws Exception {
-		log.info("##¿©±â"+idx);
 		ArrayList<Cart> cartSession = (ArrayList<Cart>)session.getAttribute("cartLists");
 		cartSession.remove(idx);
 		session.setAttribute("cartLists", cartSession);
-		//service.deleteCartS(product_code);
 		return "/shop/cart";
 	}
 	
-	@PostMapping("/cart")//Àü¼ÛµÈ »óÇ° ¹øÈ£¸¦ ¹Þ´Â´Ù.
-	public ModelAndView addProductsInCart(HttpServletRequest request, Cart cart,
-	HttpServletResponse response) throws Exception{
-		log.info("##°¡Á®¿Â Ä«Æ®°ª"+cart);
-		HttpSession session =request.getSession();
-		ArrayList<Cart> cartLists = new ArrayList<Cart>();
-		//¸®½ºÆ® ¼±¾ð
-		if(cart == null) return new ModelAndView("../","viewlists",null);
-		//¸¸¾à¿¡ cart¿¡ °ªÀÌ ³ÎÀÌ¸é ±×³É ÀÎµ¦½º·Î µ¹¾Æ°¡¶ó!
-		else {
-			ArrayList<Cart> cartSession = (ArrayList)session.getAttribute("cartLists");
-			//ArrayListÅ¸ÀÔÀÇ cartSession¿¡ cartLists¸¦ ºÒ·¯¿À±â.
-			if(cartSession != null) {
-				//¸¸¾à cartSession¿¡ °ªÀÌ ÀÖÀ¸¸é
-				cartSession.add(cart);
-				//¼¼¼Ç¿¡ cart¶ó´Â ArrayList<Cart>ÇüÅÂÀÇ ³»¿ë°ªÀ» addÇØÁà¶ó.
-				log.info("¼¼¼ÇÄ«Æ®¾È¿¡ÀÖÀ½"+cartSession);
-				session.setAttribute("cartLists", cartSession);
-				//±×¸®°í ¼¼¼Ç¿¡ ÀúÀåµÉ ¼ö ÀÖµµ·Ï cartSessionÀ» setAttributeÇØÁà¶ó.
-			}else {
-				cartLists.add(cart);
-				log.info("¼¼¼Ç »õ·Î ¸¸µê"+cartSession);
-				session.setAttribute("cartLists", cartLists);
+	@GetMapping("/cart")
+	public String cart() {
+		return "/shop/cart";
+	}
+	
+	@PostMapping("/cart")
+	public ModelAndView addProductsInCart(HttpServletRequest request, 
+			String login,String product_name2,long product_code2,String product_price2,
+			String product_content2,String product_image2, long product_amount2, 
+			String product_size2,HttpServletResponse response) throws Exception{
+			HttpSession session =request.getSession();
+			Cart cart = new Cart();
+			cart.setProduct_name(product_name2);
+			cart.setProduct_code(product_code2);
+			cart.setProduct_price(product_price2);
+			cart.setProduct_content(product_content2);
+			cart.setProduct_image(product_image2);
+			cart.setProduct_amount(product_amount2);
+			cart.setProduct_size(product_size2);
+			log.info("cart: "+cart);
+			ArrayList<Cart> cartLists = new ArrayList<Cart>();
+			if(cart == null) return new ModelAndView("../","viewlists",null);
+			else {
+				ArrayList<Cart> cartSession = (ArrayList)session.getAttribute("cartLists");
+				if(cartSession != null) {
+					cartSession.add(cart);
+					session.setAttribute("cartLists", cartSession);
+				}else {
+					cartLists.add(cart);
+					session.setAttribute("cartLists", cartLists);
+				}
+				ArrayList<Product> viewlists = new ArrayList<Product>();
+				for(Cart list : cartLists) {
+					long cart_product_code = list.getProduct_code();
+					Product product = service2.listS2(cart_product_code);
+					viewlists.add(product);
+				}
+				session.setAttribute("viewlists", viewlists);
+				log.info("$$viewlists:"+viewlists);
+				ModelAndView mvvv = new ModelAndView("/shop/cart","viewlists",viewlists);
+				return mvvv;
 			}
-			//list¿¡  product³»¿ëÀ» ´ã¾Æ³»´Â °÷
-			ArrayList<Product> viewlists = new ArrayList<Product>();
-			//±×ÈÄ¿¡ productÅ¸ÀÔÀÇ Arraylist¸¦ ¼±¾ðÇØÁØ´ÙÀ½
-			for(Cart list : cartLists) {
-				//À§¿¡¼­ ¸¸µç cartListsÀÇ ³»¿ë¹°ÀÌ µç  cartLists¸¦ for¹®¿¡ µ¹·ÁÁØ´Ù.
-				long cart_product_code = list.getProduct_code();
-				//±× ¸¸µç list¿¡ product_code°¡ long Å¸ÀÔÀÇ cart_product_code¿Í °°´Ù¸é
-				Product product = service2.listS(cart_product_code);
-				//À§¿¡¼­ ¼±¾ðÇÑ service2ÀÇ listS¸Þ¼Òµå¿¡ product_code¸¦ ³Ö¾î productÀÇ ÀüÃ¼ ³»¿ë¹°À» ºÒ·¯¿Ã ¼ö ÀÖµµ·Ï ÇÑ´Ù.
-				viewlists.add(product);
-				//±×ÈÄ¿¡ ±× ³»¿ëÀÌ ÀÖ´Â product¸¦ viewlists¿¡ Ãß°¡ÇØÁØ´Ù.(³Ö¾îÁØ´Ù)
-			}
-			session.setAttribute("viewlists", viewlists);
-			//Ãß°¡µÈ viewlists¸¦ ÀÌÁ¦ session¿¡ ³Ö¾îÁØ´Ù.
-			log.info("$$viewlists:"+viewlists);
-			ModelAndView mvvv = new ModelAndView("/shop/cart","viewlists",viewlists);
-			return mvvv;
 		}
+	
+	@RequestMapping("/changeQty")
+	public String changeQty(int index,  HttpSession session, long product_amount) {
+		ArrayList<Cart> cart = (ArrayList<Cart>) session.getAttribute("cartLists");
+		for(Cart one: cart) {
+			one = cart.get(index);
+			log.info("ì—¬ê¸°ê¹Œì§€ ì˜¤ë„¤1");
+			if(one !=null ) {
+				long product_code = one.getProduct_code();
+				one.setProduct_amount(product_amount);
+				one.setProduct_code(product_code);
+				log.info("product_amount ì˜¤ë„¤>>>>>>> " + product_amount + product_code);
+				session.setAttribute("cart", one);
+			}else {
+				long product_code = one.getProduct_code();
+				one.setProduct_amount(product_amount);
+				one.setProduct_code(product_code);
+				session.setAttribute("cart", one);
+				log.info("ì—¬ê¸°ê¹Œì§€ ì˜¤ë„¤3");
+			}
+		}
+		
+		return "redirect:cart";
 	}
 	
 	@GetMapping("/order")
 	public String order(@RequestParam int member_number) throws Exception {
-		log.info("##¿À´õ get()À¸·Î È£Ãâ");
+		log.info("##order get()");
 		ArrayList<Pay> pay = service.selectPay(member_number);
 		return "/shop/order";
 	}
@@ -108,14 +130,11 @@ public class CartController {
 	public ModelAndView order(HttpSession session, String buyer_name, long buyer_code, String name, 
 			String buyer_addr, String buyer_email, long amout
 			) throws Exception{
-			log.info("buyer_name: "+buyer_name+"name: "+name);
-			//°¡Á®¿Â °ªÀ» orderSu¿¡ ³Ö¾îÁÖ±â.
 			OrderSu ordersu = new OrderSu();
 			ordersu.setProduct_code(buyer_code);
 			ordersu.setOrdersu_name(buyer_name);
 			ordersu.setOrdersu_addr(buyer_addr);
 			ordersu.setOrdersu_email(buyer_email);
-			//³Ö¾îÁø °ªÀÇ ordersu¸¦ DB¿¡ insertÇØÁÖ±â.
 			service.insertOrderSu(ordersu);
 			session.setAttribute("ordersu", ordersu);
 			log.info("ordersu:"+ordersu);
@@ -127,7 +146,6 @@ public class CartController {
 	public ModelAndView orderSu(HttpSession session, int member_number) throws Exception{
 		ArrayList<Pay> payUpdate = service.selectPay(member_number);
 		session.setAttribute("pay", payUpdate);
-		log.info("¿À´õ(°áÁ¦)post() pay: "+payUpdate);
 		ModelAndView mv = new ModelAndView("/shop/orderSu","pay",payUpdate);
 		return mv;		
 		}

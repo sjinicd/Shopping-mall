@@ -42,6 +42,10 @@ public class WalkServiceImpl implements WalkService {
 			log.info("#insertWalk Exception : "+e);
 		}
 		walkMapper.insertWalk(dto);
+		//
+		joinVo vo = new joinVo(dto.getWalk_idx(),dto.getMember_number());
+		walkMapper.insertWalkJoin(vo);
+		walkMapper.updateWalkCmt(dto.getWalk_idx());
 	}
 	
 	// 산책 게시글 수정
@@ -71,6 +75,7 @@ public class WalkServiceImpl implements WalkService {
 		ArrayList<Walk> lists = walkMapper.getList(listVo);
 		ArrayList<Comment> cmtList = new ArrayList<Comment>();
 		ArrayList<String> picLists = new ArrayList<String>();
+		ArrayList<String> cmtPics = new ArrayList<String>();
 		for(Walk list:lists) {
 			// 시간데이터 가공
 			Date origin = list.getWalk_date();
@@ -84,6 +89,7 @@ public class WalkServiceImpl implements WalkService {
 			// 프로필 사진 셋팅
 			String url = walkMapper.getWalkPic(list.getMember_number());
 			picLists.add(url);
+			
 		}
 		return new WalkListResult(cp, ps, walkMapper.totalWalk(orderType, keyword), lists, cmtList, picLists);
 	}
@@ -94,6 +100,16 @@ public class WalkServiceImpl implements WalkService {
 		Walk dto = walkMapper.getWalk(idx);
 		ArrayList<Comment> cmts = walkMapper.getWalkCmt(idx);
 		ArrayList<Comment> joinCmts = walkMapper.getJoinCmt(idx);
+		ArrayList<String> normalUrls = new ArrayList<String>();
+		ArrayList<String> joinUrls = new ArrayList<String>();
+		for(Comment normalpic : cmts) {
+			String normalUrl = walkMapper.getWalkPic(normalpic.getMember_number());
+			normalUrls.add(normalUrl);
+		}
+		for(Comment joinPic : joinCmts) {
+			String joinUrl = walkMapper.getWalkPic(joinPic.getMember_number());
+			joinUrls.add(joinUrl);
+		}
 		int apply = cmts.size();
 		int join = joinCmts.size();
 		int like = walkMapper.getWalkLike(idx);
@@ -102,6 +118,8 @@ public class WalkServiceImpl implements WalkService {
 		dto.setLike(like);
 		dto.setNormalCmts(cmts);
 		dto.setJoinCmts(joinCmts);
+		dto.setNormalUrls(normalUrls);
+		dto.setJoinUrls(joinUrls);
 		log.info("###apply:"+apply+", join:"+join+", like:"+like);
 		return dto;
 	}
@@ -111,9 +129,19 @@ public class WalkServiceImpl implements WalkService {
 	public CmtVo getWalkCmt(long idx) {
 		ArrayList<Comment> normal = walkMapper.getWalkCmt(idx);
 		ArrayList<Comment> join = walkMapper.getJoinCmt(idx);
+		ArrayList<String> normalUrls = new ArrayList<String>();
+		ArrayList<String> joinUrls = new ArrayList<String>();
+		for(Comment normalpic : normal) {
+			String normalUrl = walkMapper.getWalkPic(normalpic.getMember_number());
+			normalUrls.add(normalUrl);
+		}
+		for(Comment joinPic : join) {
+			String joinUrl = walkMapper.getWalkPic(joinPic.getMember_number());
+			joinUrls.add(joinUrl);
+		}
 		int applyCount = normal.size();
 		int joinCount = join.size();
-		CmtVo vo = new CmtVo(normal, join, applyCount, joinCount);
+		CmtVo vo = new CmtVo(normal, join, normalUrls, joinUrls, applyCount, joinCount);
 		return vo;
 	}
 
@@ -141,7 +169,7 @@ public class WalkServiceImpl implements WalkService {
 		return dto;
 	}
 	
-//  참여 댓글 수락하기 (1) 회원번호 가져오기
+	// 참여 댓글 수락하기 (1) 회원번호 가져오기
 	@Override
 	public long selectByCmtIdx(long cmtIdx) {
 		Long memNo = walkMapper.selectByCmtIdx(cmtIdx);
@@ -149,7 +177,6 @@ public class WalkServiceImpl implements WalkService {
 	}
 	
 	// 참여 댓글 수락하기 (2) 수락하기
-	
 	@Override
 	public boolean insertWalkJoin(joinVo vo, long walk_idx) {
 		int flag = walkMapper.checkJoin(vo);
@@ -164,14 +191,14 @@ public class WalkServiceImpl implements WalkService {
 	
 	// 좋아요 버튼
 	@Override
-	public void addHeart(joinVo vo) {
-		walkMapper.addHeart(vo);
+	public void addHeart(long walk_idx,long member_number) {
+		walkMapper.addHeart(walk_idx, member_number);
 	}
 
 	// 좋아요 취소
 	@Override
-	public void deleteHeart(joinVo vo) {
-		walkMapper.deleteHeart(vo);
+	public void deleteHeart(long walk_idx,long member_number) {
+		walkMapper.deleteHeart(walk_idx, member_number);
 	}
 	
 	// 좋아요 개수 카운트

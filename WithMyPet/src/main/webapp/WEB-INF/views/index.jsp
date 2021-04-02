@@ -16,10 +16,13 @@
    <link href='//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css' rel='stylesheet' type='text/css'>
    <link rel="stylesheet" href="assets/plugins/toastr/css/toastr.min.css">
    <link rel="stylesheet" href="assets/css/main.css">
+   <link rel="stylesheet" href="assets/css/message.css">
+   <link rel="stylesheet" href="assets/css/message.min.css">
    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css" />
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.29.2/sweetalert2.all.js"></script>
+	<script src="assets/js/package.js"></script>
 </head>
 
 <body>
@@ -49,7 +52,7 @@
                       </a>
                       <div class="dropdown-menu" aria-labelledby="navbarDropdown1" style="font-family: 'Spoqa Han Sans Neo';" >
                       	<a class="dropdown-item" href="walk/list.do?cp=1" style="font-family: 'Spoqa Han Sans Neo';">산책모집 </a>
-                          <a class="dropdown-item" href="walk/board.do" style="font-family: 'Spoqa Han Sans Neo';">산책후기 </a>
+                          <a class="dropdown-item" href="/board/list.do?board_idx=3" style="font-family: 'Spoqa Han Sans Neo';">산책후기 </a>
                       </div>
                   </li>
                   <li class="nav-item dropdown">
@@ -59,8 +62,6 @@
                       </a>
                       <div class="dropdown-menu" aria-labelledby="navbarDropdown1" style="font-family: 'Spoqa Han Sans Neo';">
                       	<a class="dropdown-item" href="product?catgo_code=9" style="font-family: 'Spoqa Han Sans Neo';">쇼핑하기</a>
-                          <a class="dropdown-item" href="cart" style="font-family: 'Spoqa Han Sans Neo';">장바구니</a>
-                          <a class="dropdown-item" href="/shop/order" style="font-family: 'Spoqa Han Sans Neo';">결제</a>
                       </div>
                   </li>
                   <li class="nav-item dropdown">
@@ -72,7 +73,7 @@
                           <a class="dropdown-item" href="board/list.do?board_idx=1" style="font-family: 'Spoqa Han Sans Neo';">공지사항</a>
                           <a class="dropdown-item" href="board/list.do?board_idx=2" style="font-family: 'Spoqa Han Sans Neo';">일상이야기</a>
                           <a class="dropdown-item" href="board/list.do?board_idx=3" style="font-family: 'Spoqa Han Sans Neo';">산책후기</a>
-                          <a class="dropdown-item" href="board/list.do?board_idx=4" style="font-family: 'Spoqa Han Sans Neo';">일상이야기</a>
+                          <a class="dropdown-item" href="board/list.do?board_idx=4" style="font-family: 'Spoqa Han Sans Neo';">문의사항</a>
                       </div>
                   </li>
                   <c:choose>
@@ -83,10 +84,10 @@
 	                  </c:when>
 	                  <c:otherwise>
 	                  	  <li class="nav-item">
-		                      <a class="nav-link" href="/member/login.do" style="font-family: 'Spoqa Han Sans Neo';">로그아웃 </a>
+		                      <a class="nav-link" href="/member/logout.do" style="font-family: 'Spoqa Han Sans Neo';">로그아웃 </a>
 		                  </li>
 		                  <li class="nav-item">
-		                      <a class="nav-link" href="/member/login.do" style="font-family: 'Spoqa Han Sans Neo';">마이페이지 </a>
+		                      <a class="nav-link" href="/member/mypage.do" style="font-family: 'Spoqa Han Sans Neo';">마이페이지 </a>
 		                  </li>
 	                  </c:otherwise>
                   </c:choose>
@@ -117,27 +118,128 @@
           
           <!-- 회원 접속 시, 메시지 띄움 -->
           <c:if test="${!empty login}">
-	          <div>
-	          <c:choose>
-	          	<c:when test="${unread == 0}">
-	          		<a href="/msg/chat.do"><img src="../assets/images/icon/message.png"></a>
-	          	</c:when>
-	          	<c:otherwise>
-	          		<i class="mdi mdi-bell-outline"></i>
-                    <span class="badge badge-pill gradient-2" style="position:absolute; margin-top:-1.3%; padding-left:1.6%;
-                     margin-right:2%; color:#ffb446;">${unread}</span>
-	          		<a href="/msg/chat.do"><img src="../assets/images/icon/colorMessage.png"></a>
-	          	</c:otherwise>
-	          </c:choose>
-	          </div>
-          </c:if>
-          
-      </nav>
-  </div>
+	          <!-- 읽지 않은 메시지 확인 -->
+	          <div id="msgZone">
+	          	 <c:choose>
+		          	<c:when test="${unread eq 0}">
+		          		<i class="mdi mdi-bell-outline"></i>
+	                    <span id="unreadCount" class="badge badge-pill gradient-2" style="position:absolute; margin-top:-1.3%; padding-left:1.6%;
+	                     margin-right:2%; color:#ffb446;"></span>
+		          		<a href="/msg/chat.do"><img src="../assets/images/icon/message.png"></a>
+		          	</c:when>
+		          	<c:otherwise>
+		          		<i class="mdi mdi-bell-outline"></i>
+	                    <span id="unreadCount" class="badge badge-pill gradient-2" style="position:absolute; margin-top:-1.3%; padding-left:1.6%;
+	                     margin-right:2%; color:#ffb446;">${unread}</span>
+		          		<a href="/msg/chat.do"><img src="../assets/images/icon/colorMessage.png"></a>
+		          	</c:otherwise>
+		          </c:choose>
+		    </div>
+		  </c:if>
+	    </nav>
+	 </div>
+         
 </header>
-  <section class="w3l-main-slider" id="home">
+
+<section class="w3l-main-slider" id="home">
+
+	<c:if test="${!empty recentWalk}">
+		<div style="margin-top:5%; text-align:center;" class="ui info message">
+		  <div style="font-weight:700; font-family: 'Spoqa Han Sans Neo'; font-size:1.2rem;" class="header">
+		    	 지난 산책 이력이 있어요! 후기를 작성해주세요!
+		  </div>
+		  <ul class="list" style="font-weight:300; font-family: 'Spoqa Han Sans Neo'; text-align:center;">
+		    <li>
+		    	<b style="font-size:1rem;font-weight:300; font-family: 'Spoqa Han Sans Neo'; text-align:center;">${recentWalk.walk_date}, ${recentWalk.walk_location}</b>
+		    	<a style="font-weight:300; font-family: 'Spoqa Han Sans Neo'; text-align:center;" onclick="writeReview()"><b>산책이 잘 이루어졌나요?</b></a>
+		    </li>
+		  </ul>
+		</div>
+	</c:if>
+
+<script>
+function writeReview(){
+	var sender_number = '${sender_number}';
+	var walk_idx = '${recentWalk.walk_idx}';
+	Swal.fire({
+	  title: '산책을 함께 하셨나요?',
+	  text: "최근 일주일 내의 산책만 후기 작성이 가능하며, 사진후기를 남겨주시면 산책포인트가 지급됩니다.",
+	  icon: 'warning',
+	  showCancelButton: true,
+	  confirmButtonColor: '#3085d6',
+	  cancelButtonColor: '#d33',
+	  confirmButtonText: '네! 산책했어요!',
+	  cancelButtonText: '아뇨, 못했어요.'
+	}).then((result) => {
+	  if (result.isConfirmed) {
+		  Swal.fire({
+			  title: '한 줄 산책평',
+			  text: "상대방의 산책평 목록에 저장됩니다!",
+			  input: 'text',
+			  inputAttributes: {
+			    autocapitalize: 'off'
+			  },
+			  showCancelButton: true,
+			  confirmButtonText: '작성하기',
+			  cancelButtonText: '취소하기',
+			  showLoaderOnConfirm: true,
+			  preConfirm: (comment) => {
+				  $('#walkEventMsg').empty();
+				  $.ajax({
+						url: "writeReview.do",
+					    type: 'GET',
+					    async: false,
+					    data: {
+					    	walk_idx: walk_idx,
+						    sender_number: sender_number,
+						    content: comment
+						},
+					  success : function(map) {
+						  Swal.fire({
+							  title: '산책 후기 작성하기',
+							  text: "산책 후기 게시판으로 이동합니다.",
+							  icon: 'success',
+							  showCancelButton: true,
+							  confirmButtonColor: '#3085d6',
+							  cancelButtonColor: '#d33',
+							  confirmButtonText: '후기 작성',
+							  cancelButtonText: '작성 취소'
+							}).then((result) => {
+								location.href="/board/list.do?board_idx=3";
+							})
+					  }
+				  });
+			  }
+		  })
+	  }else{
+		  Swal.fire({
+			  title: '산책 매칭 실패',
+			  text: '산책이 이루어지지 않은 이유를 알려주세요!',
+			  input: 'text',
+			  inputAttributes: {
+			    autocapitalize: 'off'
+			  },
+			  showCancelButton: true,
+			  confirmButtonText: '작성하기',
+			  cancelButtonText: '취소하기',
+			  showLoaderOnConfirm: true,
+			  preConfirm: (comment) => {
+				  Swal.fire({
+					  icon: 'success',
+					  title: '작성해주셔서 감사합니다!',
+					  text: '더 좋은 서비스를 위해 노력하겠습니다.'
+				})
+			  }
+		  })
+	  }
+	})
+}
+</script>	
+
+
     <div class="companies20-content">
       <div class="owl-one owl-carousel owl-theme">
+	  		
         <div class="item">
           <li>
             <div class="slider-info banner-view bg bg2">
@@ -146,8 +248,8 @@
                   <div class="banner-info-bg text-left">
                     <h5>산 책</h5 style="font-family: 'Spoqa Han Sans Neo'; color:white;"><br/>
                     <p>함께하는 산책문화를 만들어요.</p>
-                    <a class="btn btn-style btn-white mt-sm-5 mt-4 mr-2" href="walklist.do">산책모집</a>
-                    <a class="btn btn-style border-btn mt-sm-5 mt-4" href="walkboard.do" style="color:#ffb446;">산책후기</a>
+                    <a class="btn btn-style btn-white mt-sm-5 mt-4 mr-2" href="walk/list.do?cp=1">산책모집</a>
+                    <a class="btn btn-style border-btn mt-sm-5 mt-4" href="/board/list.do?board_idx=3" style="color:#ffb446;">산책후기</a>
                   </div>
                 </div>
               </div>
@@ -229,11 +331,26 @@
 	          <div class="icon">
 	            <span class="fa fa-snowflake-o"></span>
 	          </div><br/>
-	          <label>${item.walk_date}</label><br/>
+	          <label>${item.day}</label><br/>
 	          <img style="width:100%; height:auto;"src="<c:url value="/img/${map.walkPics[status.index]}"/>">
 	          <h4><a href="#feature" class="title-head">${item.walk_subject}</a></h4>
 	          <p>${item.walk_content}</p>
-	          <a onclick="loginCheck()" class="read">함께하기</a>
+	          <a onclick="loginCheck(${item.walk_idx})" class="read">함께하기</a>
+<script>
+function loginCheck(idx){
+	var login = "${login.member_name}";
+	if(login == ''){
+		Swal.fire({
+			  icon: 'error',
+			  title: '로그인이 필요합니다!',
+			  text: '산책은 회원 서비스 입니다. 로그인을 먼저 해주세요.',
+			  footer: '<a href="/member/login.do">로그인</a> &nbsp;&nbsp;<b>/</b>&nbsp;&nbsp; <a href="/member/agree.do">회원가입</a>'
+		})
+	}else{
+		location.href="walk/blog.do?idx="+idx;
+	}
+}
+</script>
 	        </div>
 	      </div>
 	</c:forEach>
@@ -283,7 +400,7 @@
                       <div class="w3l-pricing-7-top">
                       	<img src="assets/images/g11.jpg"
                       	onmouseover="this.src='assets/images/g11.jpg'"
-                      	onmouseout="this.src='assets/images/g11-1.jpg'"
+                      	onmouseout="this.src='assets/images/g11-1.jpg'" style="max-width: 60%;"
                       	><br/><br/>
                           <h6 class="one-light">네오프렌 한복</h6>
                          
@@ -305,7 +422,7 @@
                               </ul>
                           </div>
                           <div class="buy-button">
-                              <a class="popup btn btn-style btn-primary" href="#buy">쇼핑하러 Go!</a>
+                              <a class="popup btn btn-style btn-primary" href="productDes?catgo_code=5&review_number=0&product_code=4">쇼핑하러 Go!</a>
                           </div>
                       </div>
                   </div>
@@ -316,7 +433,7 @@
                       <div class="w3l-pricing-7-top">
                       <img src="assets/images/g11.jpg"
                       	onmouseover="this.src='assets/images/g16.jpg'"
-                      	onmouseout="this.src='assets/images/g16-1.jpg'"
+                      	onmouseout="this.src='assets/images/g16-1.jpg'" style="max-width: 60%;"
                       	><br/><br/>
                           <h5>조회수 1위</h5>
                           <h6>멜빵치마</h6>
@@ -348,8 +465,8 @@
                   <div class="w3l-pricing-7">
                       <div class="w3l-pricing-7-top">
                       	<img src="assets/images/g11.jpg"
-                      	onmouseover="this.src='assets/images/g14-1.jpg'"
-                      	onmouseout="this.src='assets/images/g14.jpg'"
+                      	onmouseover="this.src='assets/images/g14-1.jpg'" 
+                      	onmouseout="this.src='assets/images/g14.jpg'" style="max-width: 60%;"
                       	><br/><br/>
                           <h6 class="one-light">와플 실내티</h6>
                          
@@ -387,8 +504,8 @@
   <div class="cusrtomer-layout py-5">
       <div class="container py-lg-4 py-md-3 pb-lg-0">
           <div class="heading text-center mx-auto">
-              <h6 class="sub-title text-center">산책 후기</h6>
-              <h3 class="hny-title mb-md-5 mb-4">산책 후기를 들려주세요!</h3>
+              <h6 class="sub-title text-center">가장 최근에 작성된 게시글입니다!</h6>
+              <h3 class="hny-title mb-md-5 mb-4">최근 게시글</h3>
           </div>
           <!-- /grids -->
           <div class="testimonial-width">
@@ -610,7 +727,9 @@
           }
         })
       })
-
+</script>
+<script>
+ 	// 메시지 통신
     var login = '${login.member_name}';
     var sender = $('#senNo').val();
     var socket = null;
@@ -624,13 +743,42 @@
     		console.log('info : connection opened'+event);
     	 // 메세지 왔을때 (알림 + 목록갱신)
     	 ws.onmessage = function (event){
-    		toastr.options = {
-                  closeButton: true,
-                  progressBar: true,
-                  showMethod: 'slideDown',
-                  timeOut: 8000
-           };
-           toastr.success('메시지 알림', event.data+' 님이 메시지를 보냈습니다!');
+    		 var myNo = '${login.member_number}';
+    		 $.ajax({
+   	  		  url: "/msg/receiveMsg.do",
+   	  		    type: 'GET',
+   	  		    async: false,
+   	  		    data: {
+   	  			    member_number: myNo
+   	  			},
+   	  			success : function(count) {
+   	  				// 안읽은 메시지 개수 변경 
+   	  				$('#msgZone').empty();
+   	  				html = '';
+   	  				if(count == 0){
+   	  				    html += '<i class="mdi mdi-bell-outline"></i>';
+   	  					html += '<span id="unreadCount" class="badge badge-pill gradient-2" style="position:absolute; margin-top:-1.3%;';
+   	  					html += 'adding-left:1.6%;margin-right:2%; color:#ffb446;"></span>';
+   		          		html += '<a href="/msg/chat.do"><img src="../assets/images/icon/message.png"></a>';
+   	  				}else{
+   	  					html += '<i class="mdi mdi-bell-outline"></i>';
+   	  					html += '<span id="unreadCount" class="badge badge-pill gradient-2" style="position:absolute; margin-top:-1.3%;';
+	  					html += 'adding-left:1.6%;margin-right:2%; color:#ffb446;">'+count+'</span>';
+		          		html += '<a href="/msg/chat.do"><img src="../assets/images/icon/colorMessage.png"></a>';
+   	  				}
+   	  				$('#msgZone').html(html);
+   	  				// 알림 메시지
+	   	  			toastr.options = {
+	   	                  closeButton: true,
+	   	                  progressBar: true,
+	   	                  showMethod: 'slideDown',
+	   	                  timeOut: 8000
+	   	           	};
+	   	  			toastr.success('메시지 알림', event.data+' 님이 메시지를 보냈습니다!');
+   	  			}
+   	  		});
+    		
+           
     	 };
     	};
     	ws.onclose = function(event) { 
@@ -639,8 +787,12 @@
     			connectWS();
     		}, 1000);
     	};
-    	ws.onerror = function(event) { console.log('error : '+event); };
+    	ws.onerror = function(event) { 
+    		console.log('error : '+event); 
+    	};
     };
+</script>
+<script>
       $(window).on("scroll", function () {
         var scroll = $(window).scrollTop();
 
@@ -664,21 +816,9 @@
             $("header").removeClass("active");
           }
         });
-      });
+      })
       
-      function loginCheck(){
-  		var login = "${login.member_name}";
-  		if(login == ''){
-  			Swal.fire({
-  				  icon: 'error',
-  				  title: '로그인이 필요합니다!',
-  				  text: '산책은 회원 서비스 입니다. 로그인을 먼저 해주세요.',
-  				  footer: '<a href="/member/login.do">로그인</a> &nbsp;&nbsp;<b>/</b>&nbsp;&nbsp; <a href="/member/agree.do">회원가입</a>'
-  			})
-  		}else{
-  			location.href="walk/blog.do?idx=${item.walk_idx}";
-  		}
-  	}
+      
   </script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="assets/js/theme-change.js"></script>

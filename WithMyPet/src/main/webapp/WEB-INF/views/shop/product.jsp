@@ -18,9 +18,9 @@
    </head>
    <body>
       <!--header-->
-      <header id="site-header" class="fixed-top">
+      <header id="site-header" class="fixed-top" >
          <div class="container">
-            <nav class="navbar navbar-expand-lg stroke">
+            <nav class="navbar navbar-expand-lg stroke" style="margin-top: 1.%; margin-right: 1.5%;">
                <a href="../"><img src="assets/images/logos/logo-yellow.png" class="img-curve img-fluid" alt="" /></a>
                <button class="navbar-toggler  collapsed bg-gradient" type="button" data-toggle="collapse"
                   data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false"
@@ -29,7 +29,7 @@
                <span class="navbar-toggler-icon fa icon-close fa-times"></span>
                </button>
                <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
-                  <ul class="navbar-nav ml-auto">
+                  <ul class="navbar-nav ml-auto" style="margin-right: 0.5%;">
                      <li class="nav-item">
                         <a class="nav-link" href="../">Home <span class="sr-only">(current)</span></a>
                      </li>
@@ -50,9 +50,6 @@
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown1">
                            <a class="dropdown-item" href="product">쇼핑하기</a>
-                           <a class="dropdown-item" href="cart">장바구니</a>
-                           <a class="dropdown-item" href="order">결제</a>
-                           <a class="dropdown-item" href="register?catgo_code=8">상품등록하기</a>
                         </div>
                      </li>
                      <li class="nav-item dropdown">
@@ -61,16 +58,33 @@
                         커뮤니티 <span class="fa fa-angle-down"></span>
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown1">
-                           <a class="dropdown-item" href="blog.html">공지사항</a>
-                           <a class="dropdown-item" href="blog-single.html">일상이야기</a>
+                            <a class="dropdown-item" href="board/list.do?board_idx=1" style="font-family: 'Spoqa Han Sans Neo';">공지사항</a>
+                          <a class="dropdown-item" href="board/list.do?board_idx=2" style="font-family: 'Spoqa Han Sans Neo';">일상이야기</a>
+                          <a class="dropdown-item" href="board/list.do?board_idx=3" style="font-family: 'Spoqa Han Sans Neo';">산책후기</a>
+                          <a class="dropdown-item" href="board/list.do?board_idx=4" style="font-family: 'Spoqa Han Sans Neo';">일상이야기</a>
                         </div>
                      </li>
-                     <li class="nav-item">
-                        <a class="nav-link" href="gallery.html">로그인 </a>
-                     </li>
-                     <li class="nav-item">
-                        <a class="nav-link" href="contact.html">Contact </a>
-                     </li>
+                     <c:choose>
+                        <c:when test="${empty login.member_name}">
+                           <li class="nav-item">
+                              <a class="nav-link" href="/member/login.do" style="font-family: 'Spoqa Han Sans Neo';">로그인 </a>
+                           </li>
+                        </c:when>
+                        <c:otherwise>
+                           <li class="nav-item">
+                              <a class="nav-link" href="/member/logout.do" style="font-family: 'Spoqa Han Sans Neo';">로그아웃 </a>
+                           </li>
+                           <li class="nav-item">
+                              <a class="nav-link" href="/member/login.do" style="font-family: 'Spoqa Han Sans Neo';">마이페이지 </a>
+                           </li>
+                        </c:otherwise>
+                     </c:choose>
+                     <!-- 관리자일때만 관리자페이지 입장 -->
+                     <c:if test="${login.member_name eq 'admin'}">
+                        <li class="nav-item">
+                           <a class="nav-link" href="/admin/index.do" style="font-family: 'Spoqa Han Sans Neo';">관 리 </a>
+                        </li>
+                     </c:if>
                   </ul>
                </div>
                <!-- toggle switch for light and dark theme -->
@@ -131,14 +145,14 @@
          <div class="portfolio-main py-md-4 py-3">
             <div class="container">
                <div class="header-section text-center mx-auto">
-                  <h3 class="sub-title">With My Pet 쇼핑 카테고리</h3>
+                  <h3 class="sub-title">쇼핑 카테고리</h3>
                   <!--h3 class="hny-title">Latest Gallery</h3-->
                </div>
                <div class="row galler-top mt-lg-5 mt-4">
                   <div class="col-md-4 protfolio-item hover14">
-                     <a href="category?catgo_code=8"  class="mb-4">
+                     <a href="category?catgo_code=8"  class="mb-4" style="text-align: center;">
                         <figure>
-                           <img src="assets/images/g1.jpg" alt="product" class="img-fluid" onclick="location.href='category?catgo_code=8'" width="400" height="400" >
+                           <img src="assets/images/g1.jpg" alt="product" class="author align-items-center mt-3 mb-1"  onclick="location.href='category?catgo_code=8'" width="300" height="300" >
                         </figure>
                         <c:if test="${empty product}">
                            없음.
@@ -147,37 +161,37 @@
                            <span class="sub-title2 text-center mb-2" >${list.catgo_name}</span>
                         </c:forEach>
                      </a>
-                     <a href="category2" data-lightbox="example-set" class="mb-4" data-title="lorem ipsum dolor sit amet">
+                     <a href="category2" data-lightbox="example-set" class="mb-4" data-title="lorem ipsum dolor sit amet" style="text-align: center;">
                         <figure>
-                           <img src="assets/images/g2.jpg" alt="product" class="img-fluid" onclick="location.href='category2'" width="400" height="400">
+                           <img src="assets/images/g2.jpg" alt="product" class="author align-items-center mt-3 mb-1" onclick="location.href='category2'" width="300" height="300">
                         </figure>
                         <span class="sub-title2 text-center mb-2">가방</span>         
                      </a>
                   </div>
                   <div class="col-md-4 protfolio-item hover14">
-                     <a href="category2" class="mb-4">
+                     <a href="category2" class="mb-4" style="text-align: center;">
                         <figure>
-                           <img src="assets/images/g3-1.jpg" alt="product" class="img-fluid" onclick="location.href='category2'" width="400" height="400">
+                           <img src="assets/images/g3-1.jpg" alt="product" class="author align-items-center mt-3 mb-1" onclick="location.href='category2'" width="300" height="300">
                         </figure>
                         <span class="sub-title2 text-center mb-2">애견방석</span>
                      </a>
-                     <a href="assets/images/g4.jpg" data-lightbox="example-set" class="mb-4" data-title="lorem ipsum dolor sit amet">
+                     <a href="assets/images/g4.jpg" data-lightbox="example-set" class="mb-4" data-title="lorem ipsum dolor sit amet" style="text-align: center;">
                         <figure>
-                           <img src="assets/images/g4.jpg" alt="product" class="img-fluid" width="400" height="400">
+                           <img src="assets/images/g4.jpg" alt="product" class="author align-items-center mt-3 mb-1" width="300" height="300">
                         </figure>
                         <span class="sub-title2 text-center mb-2">사료</span>
                      </a>
                   </div>
                   <div class="col-md-4 protfolio-item hover14">
-                     <a href="assets/images/g5.jpg" class="mb-4">
+                     <a href="assets/images/g5.jpg" class="mb-4" style="text-align: center;">
                         <figure>
-                           <img src="assets/images/g5.jpg" alt="product" class="img-fluid" width="400" height="400">
+                           <img src="assets/images/g5.jpg" alt="product" class="author align-items-center mt-3 mb-1" width="300" height="300">
                         </figure>
                         <span class="sub-title2 text-center mb-2">계단</span>
                      </a>
-                     <a href="assets/images/g6.jpg" class="mb-4">
+                     <a href="assets/images/g6.jpg" class="mb-4" style="text-align: center;">
                         <figure>
-                           <img src="assets/images/g6.jpg" alt="product" class="img-fluid" width="400" height="400">
+                           <img src="assets/images/g6.jpg" alt="product" class="author align-items-center mt-3 mb-1" width="300" height="300">
                         </figure>
                         <span class="sub-title2 text-center mb-2">산책줄 & 하네스</span>
                      </a>

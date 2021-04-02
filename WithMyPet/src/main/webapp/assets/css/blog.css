@@ -132,7 +132,7 @@ body{
 .blog-footer {
   margin: 0 auto;
   padding-bottom: 0.125rem;
-  width: 80%;
+  width: 45%;
 }
 
 .blog-footer ul {
@@ -308,7 +308,7 @@ p {
     max-width: 23.33333%;
 }
 .name {
-    margin-left: -150px;
+    margin-left: -20px;
 }
 
 
@@ -450,7 +450,6 @@ body {
 }
 
 body, html {
-  height: 200%;
 }
 
 * {
@@ -499,7 +498,7 @@ margin-left: 280px;
 	cursor: pointer;
 	transition: all 0.3s ease-out;
 	margin-right: 5px;
-	background: #987054;
+	background: #FFB446;
 	padding-right: 12px;
 	padding-top: 12px;
 	padding-bottom: 12px;
@@ -525,7 +524,7 @@ margin-left: 280px;
 	cursor: pointer;
 	transition: all 0.3s ease-out;
 	margin-right: 5px;
-	background: #987054;
+	background: #FFB446;
 	padding-left: 10%;
 	padding-right: 10%;
 	padding-top: 12px;

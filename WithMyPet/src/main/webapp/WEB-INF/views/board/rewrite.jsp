@@ -15,6 +15,10 @@
     
 <script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.js"></script> 
 <!-- include summernote css/js-->
+<link href="//fonts.googleapis.com/css2?family=Jost:wght@300;400;600&display=swap" rel="stylesheet">
+<link href='//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css' rel='stylesheet' type='text/css'>
+<link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.css" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/write.css"> 
 <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.11/summernote-bs4.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.11/summernote-bs4.js"></script>
 <!-- include summernote-ko-KR -->
@@ -121,9 +125,9 @@ function goWrite(f) {
 
 <!--header-->
 <header id="site-header" class="fixed-top">
-  <div class="container">
+  <div class="container" style="margin-top: -0.7%;">
       <nav class="navbar navbar-expand-lg stroke">
-          <a href="#"><img src="../assets/images/logos/logo-yellow.png" class="img-curve img-fluid" alt=""></a>
+          <a href="../../"><img src="../assets/images/logos/logo-yellow.png" class="img-curve img-fluid" alt=""></a>
          
           <!-- if logo is image enable this   
       <a class="navbar-brand" href="#index.html">
@@ -171,13 +175,27 @@ function goWrite(f) {
                           <a class="dropdown-item" href="board/list.do?board_idx=4&amp;cp=1">쇼핑후기</a>
                       </div>
                   </li>
-                  <li class="nav-item">
-                      <a class="nav-link" href="gallery.html" style="font-family: 'Spoqa Han Sans Neo';">로그인 </a>
-                  </li>
-                 
-                  <li class="nav-item">
-                      <a class="nav-link" href="sendmail.do">Contact </a>
-                  </li>
+                 <c:choose>
+                  	  <c:when test="${empty login.member_name}">
+		                  <li class="nav-item">
+		                      <a class="nav-link" href="/member/login.do" style="font-family: 'Spoqa Han Sans Neo';">로그인 </a>
+		                  </li>
+	                  </c:when>
+	                  <c:otherwise>
+	                  	  <li class="nav-item">
+		                      <a class="nav-link" href="/member/login.do" style="font-family: 'Spoqa Han Sans Neo';">로그아웃 </a>
+		                  </li>
+		                  <li class="nav-item">
+		                      <a class="nav-link" href="/member/mypage.do" style="font-family: 'Spoqa Han Sans Neo';">마이페이지 </a>
+		                  </li>
+	                  </c:otherwise>
+                  </c:choose>
+                  <!-- 관리자일때만 관리자페이지 입장 -->
+                  <c:if test="${login.member_name eq 'admin'}"> 
+	                  <li class="nav-item">
+	                      <a class="nav-link" href="/admin/index.do" style="font-family: 'Spoqa Han Sans Neo';">관 리 </a>
+	                  </li>
+                  </c:if>
               </ul>
           </div>
           <!-- toggle switch for light and dark theme -->
@@ -207,10 +225,9 @@ function goWrite(f) {
 	
 	
 	<!-- 1. 최초글작성 / 2. 수정글 작성  -->
-
-<c:choose>
+	<c:choose>
 	<c:when test="${empty board.post_subject}">
-	<select id="category" name="board_idx" class="form-control" required="">
+	<select id="category" name="board_idx" class="form-control" required="" style="font-size:13px;">
 	       	         
 	         <option value="">게시판을 선택해 주세요.</option>
 	         
@@ -222,6 +239,8 @@ function goWrite(f) {
 					산책후기 </option>
 			 	<option value="4" >
 					쇼핑후기 </option>
+				<option value="5" >
+					문의사항 </option>
 		
     </select>
 	</c:when>
@@ -239,9 +258,12 @@ function goWrite(f) {
 			<c:when test="${board.board_idx eq '3'}">
 	         <option value="3" >
 					산책후기</option></c:when>
-			<c:otherwise>
+			<c:when test="${board.board_idx eq '4'}">
 	         <option value="4" >
-					쇼핑후기</option></c:otherwise>	
+					쇼핑후기</option></c:when>
+			<c:otherwise>
+	         <option value="5" >
+					문의사항</option></c:otherwise>	
 			</c:choose>
 	</select>
 	</c:otherwise>
@@ -250,12 +272,16 @@ function goWrite(f) {
 			
 		<br>
                 
-        
+        <c:choose>
+		 <c:when test="${login.member_name eq '관리자'}">
+		<input type="text" name="post_subject"  class="	form-control" value="문의 답변입니다"/><br>
+		</c:when>
 		
+		<c:otherwise>
 		<input type="text" name="post_subject"  class="form-control" value="제목"/><br>
+		</c:otherwise>
+		</c:choose>
 		
-		
-
 		<br> 
 		<textarea id="summernote" name="content" >${board.content}</textarea>
 		${board.board_name}
@@ -271,6 +297,85 @@ function goWrite(f) {
 </div>
 
 
+<!-- footer-28 block -->
+<section class="w3l-footer">
+  <footer class="footer-28">
+    <div class="footer-bg-layer">
+      <div class="container py-lg-3">
+        <div class="row footer-top-28">
+          <div class="col-lg-6 col-md-5 footer-list-28 mt-5">
+            <h6 class="footer-title-28">Contact information</h6>
+            <ul>
+              <li>
+                <p><strong>Address</strong> : Seoul Mapo Baekbumro, South Korea</p>
+              </li>
+              <li>
+                <p><strong>Contact</strong> : <a href="tel:+(12)234-11-24">Click Here</a></p>
+              </li>
+            </ul>
 
+            <div class="main-social-footer-28 mt-3">
+              <ul class="social-icons">
+                <li class="facebook">
+                  <a href="#link" title="Facebook">
+                    <span class="fa fa-facebook" aria-hidden="true"></span>
+                  </a>
+                </li>
+                <li class="twitter">
+                  <a href="#link" title="Twitter">
+                    <span class="fa fa-twitter" aria-hidden="true"></span>
+                  </a>
+                </li>
+                <li class="dribbble">
+                  <a href="#link" title="Dribbble">
+                    <span class="fa fa-dribbble" aria-hidden="true"></span>
+                  </a>
+                </li>
+                <li class="google">
+                  <a href="#link" title="Google">
+                    <span class="fa fa-google" aria-hidden="true"></span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-lg-6 col-md-7">
+            <div class="row">
+              <div class="col-sm-4 col-6 footer-list-28 mt-5">
+                <h6 class="footer-title-28">Walk Service</h6>
+                <ul>
+                  <li><a href="about.html">Cha Ji Hyun</a></li>
+                  <li><a href="blog.html">Lim Yeon Ji</a></li>
+                </ul>
+              </div>
+              <div class="col-sm-4 col-6 footer-list-28 mt-5">
+                <h6 class="footer-title-28">Shopping Service</h6>
+                <ul>
+                  <li><a href="contact.html">Lee Ok Seok</a></li>
+                  <li><a href="#signup">Sung Jin Hee</a></li>
+                </ul>
+              </div>
+              <div class="col-sm-4 footer-list-28 mt-5">
+                <h6 class="footer-title-28">Member Service</h6>
+                <ul>
+                  <li><a href="#URL">Choi Woo Jae</a></li>
+                  <li><a href="#URL">Lee Su Jin</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="midd-footer-28 align-center py-lg-4 py-3 mt-5">
+        <div class="container">
+          <p class="copy-footer-28 text-center"> © 2021 With My Pet. All Rights Reserved.
+           </p>
+        </div>
+      </div>
+    </div>
+  </footer>
+  </section>
 </body>
 </html>

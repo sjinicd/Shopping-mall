@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.web.multipart.MultipartFile;
 
 import pet.shop.domain.Cart;
@@ -24,7 +25,8 @@ public interface ProductMapper {
 	long selectCount();
 	long selectCountByCatgo(ProductVo productVo);
 	void insert(Product product);
-	Product listProduct(long catgo_code);
+	Product listProduct(Product product);
+	Product listProduct3(long cart_product_code);
 	List<Category> listCatgo(long catgo_code);
 	Review contentReview(long review_number);
 	ArrayList<Product> listProduct2(long catgo_code);

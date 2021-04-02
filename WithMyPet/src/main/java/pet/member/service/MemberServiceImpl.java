@@ -38,8 +38,8 @@ public class MemberServiceImpl implements MemberService {
    
    //마이페이지 본인정보 확인
    @Override
-   public MemberVO mypage(MemberVO lvo) {
-      return mapper.mypage(lvo);
+   public MemberVO mypage(int vo) {
+      return mapper.mypage(vo);
    }
    
  //follow 마이페이지 정보 확인
@@ -71,7 +71,7 @@ public class MemberServiceImpl implements MemberService {
    public String getpwSearch(String email) throws Exception {
 	   BCryptPasswordEncoder pwencoder = new BCryptPasswordEncoder();
 	   
-	   log.info("바보아니면 찍혀라"+email);
+	   //log.info("바보아니면 찍혀라"+email);
 	   MemberVO vo = new MemberVO();
 	   vo.setMember_email(email);
 	   
@@ -79,7 +79,7 @@ public class MemberServiceImpl implements MemberService {
 
    	// 가입된 아이디가 없으면
    	if(result == 0) {
-   		log.info("등록되지 않은 아이디입니다.");
+   		//log.info("등록되지 않은 아이디입니다.");
    		return null;
    	}else {
    		// 임시 비밀번호 생성
@@ -87,7 +87,7 @@ public class MemberServiceImpl implements MemberService {
    		for (int i = 0; i < 12; i++) {
    			pw += (char) ((Math.random() * 26) + 97);
    		}
-   		log.info("암호 안걸린 임시비번 찍어본다"+pw);
+   		//log.info("암호 안걸린 임시비번 찍어본다"+pw);
    		vo.setMember_password(pw);
    		
    		//메일 전송
@@ -129,6 +129,12 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public void makeLoginLog(long member_number, String member_name) {
 		mapper.makeLoginLog(member_number, member_name);
+	}
+
+	@Override
+	public long checkLoginLog(long member_number) {
+		long check = mapper.checkLoginLog(member_number);
+		return check;
 	}
    
 

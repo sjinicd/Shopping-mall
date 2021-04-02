@@ -10,6 +10,8 @@
 	  
 	  
 	</select>
+	
+	
 		
 	<select id="selectByCatgo" resultType="Board" parameterType="BoardVo" >
 	<![CDATA[ 
@@ -18,6 +20,28 @@
 	  where rnum>#{startRow} and rnum<=#{endRow}
 	]]>
 	</select>
+	
+	
+	<select id="selectByTag" resultType="Board" parameterType="BoardVo">
+	<![CDATA[ 
+		select * from (select rownum rnum, aa.* 
+	from (select * from board join tag on board.post_idx=tag.post_idx where ${catgo} like '%'||#{keyword}||'%' order by ${catgo}) aa) 
+	  where rnum>#{startRow} and rnum<=#{endRow}
+	 ]]>
+	</select>
+	
+	
+	
+	<select id="selectPerMember" resultType="Board" parameterType="BoardVo">
+	    <![CDATA[ 
+	     select B.* from (select rownum as rnum, A.* from (select * from board order by post_no desc, post_order asc) A
+	  where member_number=#{member_number} and rownum<=#{endRow}) B where B.rnum>#{startRow}]]>
+  
+	</select>
+		
+	
+	
+	
 	
 	<select id="selectBySeq" parameterType="long" resultType="Board">
 	    select * from board where post_idx=#{post_idx}
@@ -39,8 +63,17 @@
 		select count(POST_IDX) from BOARD where board_idx=#{board_idx}
 	</select>
 	
-	<select id="selectCountByCatgo" resultType="int" parameterType="BoardVo">
-		select count(POST_IDX) from BOARD where ${catgo} like '%'||#{keyword}||'%'
+	<select id="selectMemberCount" resultType="long" parameterType="int">
+		select count(post_idx) from board where member_number=#{member_number}
+	</select>
+	
+	
+		<select id="selectCountByCatgo" resultType="int" parameterType="BoardVo">
+			select count(*) from board, tag where ${catgo} like '%'||#{keyword}||'%'
+		<if test="keyword!=null and catgo.equals('post_tag')">
+			and board.post_idx=tag.post_idx
+		</if>
+
 	</select>	
 		
 		
@@ -145,13 +178,33 @@
 	
 	</insert>
 	
-		<select id ="getRecent" resultType="Board">
-	<![CDATA[select post_subject, post_idx, content, post_writer from ( select * from board order by post_date desc) where board_idx=3 and rownum<5]]>
+	<select id ="getRecent" resultType="Board">
+		<![CDATA[select post_subject, post_idx, content, post_writer from ( select * from board order by post_date desc) where board_idx=3 and rownum<5]]>
+	</select>
+	
+	<insert id="enterTag" parameterType="Tag">
+		<selectKey keyProperty="post_idx" keyColumn="post_idx" order="BEFORE" resultType="long">
+    		select max(post_idx) from board
+    	</selectKey>
+    	
+		insert into tag(post_idx,  post_tag) values(#{post_idx}, #{post_tag, jdbcType=VARCHAR})
+	</insert>
+	
+	<select id ="getTag" resultType="Tag" parameterType="long">
+		select * from tag where post_idx=#{post_idx}
 	</select>
 	
 	
-	
-	
-	
+	<delete id="delTag" parameterType="long">
+		delete from tag where post_idx=#{post_idx}
+	</delete>
+
+	<insert id="editTag" parameterType="Tag">
+		insert into tag(post_idx, post_tag) values(#{post_idx}, #{post_tag})
+	</insert>
+
+	<select id="getTagAll" resultType="Tag">
+		select * from tag
+	</select>
 
 	</mapper>
