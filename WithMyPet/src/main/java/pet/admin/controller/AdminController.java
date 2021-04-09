@@ -125,11 +125,6 @@ public class AdminController {
 	}
 	@RequestMapping("registerProduct.do")
 	private String upload(MultipartFile uploadfile,Product product,long catgo_code) throws Exception {
-		log.info("register 뷰가 나오네? ㅎ");
-		log.info("upload() POST 호출");
-	    log.info("파일 이름: {}"+ uploadfile.getOriginalFilename());
-	    log.info("파일 크기: {}"+ uploadfile.getSize());
-	    log.info("product_name: "+product);
 		return saveFilee(uploadfile,product,catgo_code);
 	}
 	private String saveFilee(MultipartFile file, Product product,long catgo_code) {
