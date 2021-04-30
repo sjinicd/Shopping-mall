@@ -41,7 +41,7 @@ public class CartController {
 	private ProductService service2;
 
 	
-	//����Ʈ �ҷ�����
+	
 	@GetMapping("/del")
 	public String cart(Cart cart,HttpSession session,int idx) throws Exception {
 		ArrayList<Cart> cartSession = (ArrayList<Cart>)session.getAttribute("cartLists");
@@ -99,19 +99,17 @@ public class CartController {
 		ArrayList<Cart> cart = (ArrayList<Cart>) session.getAttribute("cartLists");
 		for(Cart one: cart) {
 			one = cart.get(index);
-			log.info("여기까지 오네1");
+			
 			if(one !=null ) {
 				long product_code = one.getProduct_code();
 				one.setProduct_amount(product_amount);
 				one.setProduct_code(product_code);
-				log.info("product_amount 오네>>>>>>> " + product_amount + product_code);
 				session.setAttribute("cart", one);
 			}else {
 				long product_code = one.getProduct_code();
 				one.setProduct_amount(product_amount);
 				one.setProduct_code(product_code);
 				session.setAttribute("cart", one);
-				log.info("여기까지 오네3");
 			}
 		}
 		
@@ -120,7 +118,7 @@ public class CartController {
 	
 	@GetMapping("/order")
 	public String order(@RequestParam int member_number) throws Exception {
-		log.info("##order get()");
+		
 		ArrayList<Pay> pay = service.selectPay(member_number);
 		return "/shop/order";
 	}
@@ -137,7 +135,6 @@ public class CartController {
 			ordersu.setOrdersu_email(buyer_email);
 			service.insertOrderSu(ordersu);
 			session.setAttribute("ordersu", ordersu);
-			log.info("ordersu:"+ordersu);
 			ModelAndView mv = new ModelAndView("/shop/order","ordersu",ordersu);
 			return mv;
 			}
