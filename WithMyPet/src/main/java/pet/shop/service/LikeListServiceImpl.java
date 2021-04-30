@@ -19,9 +19,7 @@ public class LikeListServiceImpl implements LikeListService {
 	// 찜 목록 추가
 	@Override
 	public void insertLikeList(long member_number, long product_code) {
-		log.info("###### member_number:"+member_number+", product_code:"+product_code);
 		likelistMapper.insertLikeList(member_number, product_code);
-		log.info("###### 완료!");
 	}
 
 	// 찜한 목록 리스트
@@ -33,7 +31,6 @@ public class LikeListServiceImpl implements LikeListService {
 			Product product = likelistMapper.getProduct(list);
 			productList.add(product);
 		}
-		log.info("###### 검색된 좋아요 리스트"+productList);
 		return productList;
 	}
 
