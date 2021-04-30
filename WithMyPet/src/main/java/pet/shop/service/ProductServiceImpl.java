@@ -47,7 +47,6 @@ public class ProductServiceImpl implements ProductService {
 		Product p = productMapper.listProduct(product);
 		long catgo_code = p.getCatgo_code();
 		long product_code = p.getProduct_code();
-		if(p !=null) log.info("널아님 catgo_code: "+catgo_code+product_code);
 		return p;
 	}
 
@@ -59,7 +58,6 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public List<Category> listCatgoS(long catgo_code) {
 		log.info("productMapper.listCatgo(catgo_code): "+catgo_code);
-		log.info("잘나옴");
 		List<Category> r = productMapper.listCatgo(catgo_code);
 		if(r != null) log.info("널아님");
 		log.info("productMapper.listCatgo(catgo_code): "+productMapper.listCatgo(catgo_code));
@@ -69,7 +67,6 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public Review contentReviewS(long review_number) {
 		log.info("productMapper.listReview(review_number"+review_number);
-		log.info("잘나옴");
 		Review rr = productMapper.contentReview(review_number);
 		if(rr !=null) log.info("널아님");
 		return productMapper.contentReview(review_number);
@@ -82,39 +79,30 @@ public class ProductServiceImpl implements ProductService {
 
 	@Override
 	public void insertReview(Review review) {
-		log.info("제발 인서트야 되라");
 		productMapper.insertReview(review);
-		log.info("최종:"+review);
 	}
 
 	@Override
 	public ArrayList<Option> listOption(long product_code) {
 		log.info("option으로 들어옴: "+product_code);
 		ArrayList<Option> op = productMapper.listOption(product_code);
-		log.info("option : "+ op);
 		return op;
 	}
 
 	@Override
 	public void insertOption(Option option) {
-		log.info("insertOption 들어옴 :"+option);
 		productMapper.insertOption(option);
-		log.info("option: "+option);
 	}
 
 	@Override
 	public ArrayList<Product> listProduct2(long catgo_code) {
-		log.info("listProduct2 들어옴 :"+catgo_code);
 		ArrayList<Product> pt = productMapper.listProduct2(catgo_code);
-		log.info("catgo_code: "+catgo_code+pt);
 		return productMapper.listProduct2(catgo_code);
 	}
 
 	@Override
 	public Product contentProductS(long catgo_code) {
-		log.info("contentProduct 들어옴: "+catgo_code);
 		Product product = productMapper.contentProduct(catgo_code);
-		log.info("product 들어왔다: " +product);
 		return productMapper.contentProduct(catgo_code);
 	}
 
@@ -123,7 +111,7 @@ public class ProductServiceImpl implements ProductService {
 		Product p = productMapper.listProduct3(cart_product_code);
 		long catgo_code = p.getCatgo_code();
 		long product_code = p.getProduct_code();
-		if(p !=null) log.info("널아님 catgo_code: "+catgo_code+product_code);
+		if(p !=null) log.info(catgo_code: "+catgo_code);
 		return p;
 	}
 
