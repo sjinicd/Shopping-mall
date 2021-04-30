@@ -100,11 +100,9 @@ public class ShopController {
 			log.info("list size: "+li.size());
 			
 			if(listResult.getList().size() ==0) {
-				log.info("(#3) listResult 실패");
 				if(cp >1) return new ModelAndView("redirect:category?cp="+(cp-1));
 				else return new ModelAndView("shop/category","listResult", null);
 			}else {
-				log.info("성공1");
 				return mv;
 			}
 		}else {
@@ -121,17 +119,14 @@ public class ShopController {
 				ArrayList<Product> list = service.listProduct2(catgo_code);
 				log.info(" category catgo_code받아짐:"+catgo_code+list);
 				ModelAndView mv1 = new ModelAndView("shop/category","category",list);
-				log.info("성공2");
 				return mv1;
 			}
 		}
-		/*return "/shop/category";*/
 	}
 	
 	//상품 소분류 카테고리
 	@RequestMapping("/category2")
 	public String category2() {
-		log.info("category2로 왔다");
 		return "/shop/category2";
 	}
 	
@@ -150,14 +145,12 @@ public class ShopController {
 		log.info("##"+review_number+catgo_code+product_code);
 		Product list = service.listS(product);
 		MypagePetVO mpvo = (MypagePetVO) session.getAttribute("petMypage");
-		log.info("mpvo 들어옴: "+mpvo);
 		ArrayList<Review> reviewCon = service.listReviewS(review_number);
 		ArrayList<Option> optionlist= service.listOption(product_code);
 		session.setAttribute("reviewCon", reviewCon);
 		session.setAttribute("list", list);
 		session.setAttribute("optionlist", optionlist);
 		session.setAttribute("mpvo", mpvo);
-		log.info("###productDes"+optionlist+reviewCon+list+mpvo);
 		session.setAttribute("productDes", list);
 		ModelAndView mvv = new ModelAndView("/shop/productDes","productDes", list);
 		return mvv;
@@ -166,9 +159,7 @@ public class ShopController {
  	//상품 상세페이지1
  	@PostMapping("/productDes")
  	public String productDes(Review review) {
- 		log.info("#왔니? review: "+ review);
  		service.insertReview(review);
- 		log.info("###productDes"+review);
 		return "redirect:productDes?catgo_code=9&review_number=1&product_code=9";
  	}
  	
@@ -176,14 +167,12 @@ public class ShopController {
 	@RequestMapping("/productDes21")
 	public ModelAndView productDes21(HttpSession session, Product product, @RequestParam long catgo_code,@RequestParam long review_number
 			, Option option, long product_code) {
-		log.info("@@"+review_number+catgo_code+product_code);
 		Product list = service.listS(product);
 		List<Review> reviewCon = service.listReviewS(review_number);
 		ArrayList<Option> optionlist= service.listOption(product_code);
 		session.setAttribute("list", list);
 		session.setAttribute("reviewCon", reviewCon);
 		session.setAttribute("optionlist", optionlist);
-		log.info("@@@"+reviewCon+list+optionlist);
 		ModelAndView mvvv = new ModelAndView("/shop/productDes21","productDes21",list);
 		return mvvv;
 	}
@@ -197,11 +186,6 @@ public class ShopController {
 	//상품등록페이지 수정1
 	@PostMapping("/category")
 	public String upload(MultipartFile uploadfile,Product product,long catgo_code) throws Exception {
-		log.info("register 뷰가 나오네? ㅎ");
-		log.info("upload() POST 호출");
-	    log.info("파일 이름: {}"+ uploadfile.getOriginalFilename());
-	    log.info("파일 크기: {}"+ uploadfile.getSize());
-	    log.info("product_name: "+product);
 		return saveFilee(uploadfile,product,catgo_code);
 	}
 	private String saveFilee(MultipartFile file, Product product,long catgo_code) {
