@@ -84,7 +84,6 @@ public class ProductServiceImpl implements ProductService {
 
 	@Override
 	public ArrayList<Option> listOption(long product_code) {
-		log.info("option으로 들어옴: "+product_code);
 		ArrayList<Option> op = productMapper.listOption(product_code);
 		return op;
 	}
