@@ -28,7 +28,6 @@ public class FileUploadServiceImpl implements FileUploadService {
 	
 	@Override
 	public String saveStore(MultipartFile file,Product product) {
-		log.info("파일 saveStore 까지옴 ");
 		String product_ofname = file.getOriginalFilename();
 		int idx = product_ofname.lastIndexOf(".");
 		String ofheader = product_ofname.substring(0, idx);
@@ -41,7 +40,6 @@ public class FileUploadServiceImpl implements FileUploadService {
 		sb.append(ext);
 		String product_fname = sb.toString();
 		long product_fsize = file.getSize();
-		log.info("#ofname: "+product_ofname+", saveFileName: "+ product_fname+", fsize: "+product_fsize);
 		boolean flag = writeFile(file, product_fname);
 		if(flag) {
 			log.info("#업로드 성공");
