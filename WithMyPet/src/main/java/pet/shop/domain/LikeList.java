@@ -14,5 +14,3 @@ public class LikeList {
 	private long member_number;
 	private long product_code;
 }
-
-//이건 DTO
