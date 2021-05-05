@@ -41,7 +41,7 @@ public class CartController {
 	private ProductService service2;
 
 	
-	
+	//장바구니 항목삭제 
 	@GetMapping("/del")
 	public String cart(Cart cart,HttpSession session,int idx) throws Exception {
 		ArrayList<Cart> cartSession = (ArrayList<Cart>)session.getAttribute("cartLists");
@@ -54,7 +54,7 @@ public class CartController {
 	public String cart() {
 		return "/shop/cart";
 	}
-	
+	//
 	@PostMapping("/cart")
 	public ModelAndView addProductsInCart(HttpServletRequest request, 
 			String login,String product_name2,long product_code2,String product_price2,
@@ -93,7 +93,7 @@ public class CartController {
 				return mvvv;
 			}
 		}
-	
+	//장바구니 수량변경
 	@RequestMapping("/changeQty")
 	public String changeQty(int index,  HttpSession session, long product_amount) {
 		ArrayList<Cart> cart = (ArrayList<Cart>) session.getAttribute("cartLists");
@@ -115,14 +115,14 @@ public class CartController {
 		
 		return "redirect:cart";
 	}
-	
+
 	@GetMapping("/order")
 	public String order(@RequestParam int member_number) throws Exception {
 		
 		ArrayList<Pay> pay = service.selectPay(member_number);
 		return "/shop/order";
 	}
-	
+	//주문화면
 	@ResponseBody
 	@PostMapping("/order")
 	public ModelAndView order(HttpSession session, String buyer_name, long buyer_code, String name, 
@@ -138,7 +138,7 @@ public class CartController {
 			ModelAndView mv = new ModelAndView("/shop/order","ordersu",ordersu);
 			return mv;
 			}
-	
+	//
 	@GetMapping("/orderSu")
 	public ModelAndView orderSu(HttpSession session, int member_number) throws Exception{
 		ArrayList<Pay> payUpdate = service.selectPay(member_number);
