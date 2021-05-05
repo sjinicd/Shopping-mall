@@ -138,7 +138,7 @@ public class CartController {
 			ModelAndView mv = new ModelAndView("/shop/order","ordersu",ordersu);
 			return mv;
 			}
-	//
+	//주문성공
 	@GetMapping("/orderSu")
 	public ModelAndView orderSu(HttpSession session, int member_number) throws Exception{
 		ArrayList<Pay> payUpdate = service.selectPay(member_number);
