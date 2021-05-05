@@ -54,7 +54,7 @@ public class CartController {
 	public String cart() {
 		return "/shop/cart";
 	}
-	//
+	//장바구니
 	@PostMapping("/cart")
 	public ModelAndView addProductsInCart(HttpServletRequest request, 
 			String login,String product_name2,long product_code2,String product_price2,
